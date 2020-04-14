@@ -35,28 +35,20 @@ char* log_level_text(int level)
 
 char* log_level_colour(int level)
 {
-    static char buf[3];
-    buf[0] = 0;
-    buf[1] = 0;
-    buf[2] = 0;
-
     if (level == LOG_FATAL)
-    {
-        strcat(buf, (C_BLD));
-        return strcat(buf, (C_RED));
-    }
+        return (LC_FTL);
     else if (level == LOG_ERROR)
-        return (C_RED);
+        return (LC_ERR);
     else if (level == LOG_WARN)
-        return (C_MAG);
+        return (LC_WRN);
     else if (level == LOG_INFO)
-        return (C_YEL);
+        return (LC_INF);
     else if (level == LOG_TRACE)
-        return (C_BLU);
+        return (LC_TRC);
     else if (level == LOG_DEBUG)
-        return (C_GRN);
+        return (LC_DBG);
     else
-        return (C_RED);
+        return (LC_UNK);
 }
 
 
@@ -74,32 +66,41 @@ void basic_vlog(int level, char *format, va_list args)
 {
     if (format == NULL)
     {
-	    format = "SYSERR: received a NULL format.";
-	    level = LOG_ERROR;
+        format = "SYSERR: received a NULL format.";
+        level = LOG_ERROR;
     }
 
     if (level <= g_log_level)
     {
-    	char timeBuf[TIME_BUF_SZ];
-    	memset(timeBuf, 0, sizeof(char)*TIME_BUF_SZ);
+        char timeBuf[TIME_BUF_SZ];
+        char timeFmt[TIME_BUF_SZ];
 
-	    time_t ct = time(0);
-	    (void)strftime(timeBuf, TIME_BUF_SZ, "%Y-%m-%dT%H:%M:%S %Z", gmtime(&ct));
-	    //char *time_s = asctime(localtime(&ct));
+        memset(timeBuf, 0, sizeof(char)*TIME_BUF_SZ);
+        /*memset(timeFmt, 0, sizeof(char)*TIME_BUF_SZ);
 
-	    //timeBuf[strlen(timeBuf) - 1] = '\0';
+        sprintf();
 
-	    /*
-	    fprintf(stderr, "[%s]%s[%s]%s ", timeBuf, ,log_level_colour(level), log_level_text(level), C_NRM);
-	    vfprintf(stderr, format, args);
-	    fputc('\n', stderr);
-		 */
-	    fprintf(stderr, "[%s]%s[%s] ", timeBuf ,log_level_colour(level), log_level_text(level));
-	    vfprintf(stderr, format, args);
-	    fprintf(stderr, "%s\n", C_NRM);
-	    
-	    fflush(stderr);
-	}
+		struct timeval  tv;
+		gettimeofday(&tv, NULL);*/
+
+        time_t ct = time(0);
+        (void)strftime(timeBuf, TIME_BUF_SZ, "%Y-%m-%dT%H:%M:%S.", gmtime(&ct));
+
+        //char *time_s = asctime(localtime(&ct));
+
+        //timeBuf[strlen(timeBuf) - 1] = '\0';
+
+        /*
+        fprintf(stderr, "[%s]%s[%s]%s ", timeBuf, ,log_level_colour(level), log_level_text(level), C_NRM);
+        vfprintf(stderr, format, args);
+        fputc('\n', stderr);
+         */
+        fprintf(stderr, "[%s]%s[%s] ", timeBuf ,log_level_colour(level), log_level_text(level));
+        vfprintf(stderr, format, args);
+        fprintf(stderr, "%s\n", C_NRM);
+        
+        fflush(stderr);
+    }
 }
 
 

@@ -14,18 +14,6 @@
 #define TRUE 1
 #endif
 
-/* Log levels */
-#define LOG_FATAL 0
-#define LOG_ERROR 1
-#define LOG_WARN  2
-#define LOG_INFO  3
-#define LOG_TRACE 4
-#define LOG_DEBUG 5
-
-#define LOGLEVEL_DEFAULT (LOG_INFO)
-
-extern  int g_log_level;
-
 /* Colour vals */
 #ifdef USE_COLOUR
     #define C_NRM "\033[0m"
@@ -42,6 +30,33 @@ extern  int g_log_level;
     #define C_MAG "\033[35m"
     #define C_CYN "\033[36m"
     #define C_WHT "\033[37m"
+
+    #define C_BBLK "\033[90m"
+    #define C_BRED "\033[91m"
+    #define C_BGRN "\033[92m"
+    #define C_BYEL "\033[93m"
+    #define C_BBLU "\033[94m"
+    #define C_BMAG "\033[95m"
+    #define C_BCYN "\033[96m"
+    #define C_BWHT "\033[97m"
+
+    #define CB_BLK "\033[40m"
+    #define CB_RED "\033[41m"
+    #define CB_GRN "\033[42m"
+    #define CB_YEL "\033[43m"
+    #define CB_BLU "\033[44m"
+    #define CB_MAG "\033[45m"
+    #define CB_CYN "\033[46m"
+    #define CB_WHT "\033[47m"
+
+    #define CB_BBLK "\033[100m"
+    #define CB_BRED "\033[101m"
+    #define CB_BGRN "\033[102m"
+    #define CB_BYEL "\033[103m"
+    #define CB_BBLU "\033[104m"
+    #define CB_BMAG "\033[105m"
+    #define CB_BCYN "\033[106m"
+    #define CB_BWHT "\033[107m"
 #else
     #define C_NRM ""
 
@@ -57,14 +72,60 @@ extern  int g_log_level;
     #define C_MAG ""
     #define C_CYN ""
     #define C_WHT ""
+
+    #define C_BBLK ""
+    #define C_BRED ""
+    #define C_BGRN ""
+    #define C_BYEL ""
+    #define C_BBLU ""
+    #define C_BMAG ""
+    #define C_BCYN ""
+    #define C_BWHT ""
+
+    #define CB_BLK ""
+    #define CB_RED ""
+    #define CB_GRN ""
+    #define CB_YEL ""
+    #define CB_BLU ""
+    #define CB_MAG ""
+    #define CB_CYN ""
+    #define CB_WHT ""
+
+    #define CB_BBLK ""
+    #define CB_BRED ""
+    #define CB_BGRN ""
+    #define CB_BYEL ""
+    #define CB_BBLU ""
+    #define CB_BMAG ""
+    #define CB_BCYN ""
+    #define CB_BWHT ""
 #endif
 
-/* Limits and values */
-#define MaxVal (a,b) ( a < b ? b : a )
+/* Log levels */
+#define LOG_FATAL 0
+#define LOG_ERROR 1
+#define LOG_WARN  2
+#define LOG_INFO  3
+#define LOG_TRACE 4
+#define LOG_DEBUG 5
 
-#define MinVal (a,b) ( a < b ? a : b )
+#define LOGLEVEL_DEFAULT (LOG_INFO)
 
-#define LimitVal (mn, mx, v) ( v > mx ? mx : ( v < mn ? mn : v ) )
+#define LC_FTL (C_BRED)
+#define LC_ERR (C_RED)
+#define LC_WRN (C_MAG)
+#define LC_INF (C_YEL)
+#define LC_TRC (C_CYN)
+#define LC_DBG (C_GRN)
+#define LC_UNK (C_BLU)
+
+extern  int g_log_level;
+
+/* Limits and values - macros - bad :( */
+#define MinVal(a,b) (((a)<(b))?(a):(b))
+#define MaxVal(a,b) (((a)>(b))?(a):(b))
+
+#define LimitVal (i, x, v) (((v) > (x)) ? (x) : ((v) < (i) ? (i) : (v)))
 
 extern char* log_level_text(int level);
 extern char* log_level_colour(int level);

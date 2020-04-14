@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 
 #include <Utils.h>
 
@@ -108,9 +109,33 @@ int test_min()
     test_MinVal_Int(-1, -42, "-one, -forty-two min test", -42);
     test_MinVal_Int(-42, -1, "-forty-two, -one min test", -42);
 
+    test_MinVal_Int(0, INT_MAX, "0, INT_MAX min test", 0);
+    test_MinVal_Int(0, INT_MIN, "0, INT_MIN min test", INT_MIN);
+    test_MinVal_Int(INT_MAX, INT_MIN, "INT_MIN, INT_MAX min test", INT_MIN);
+
+    test_MinVal_Int(3765, 3765, "Same positive value min test", 3765);
+    test_MinVal_Int(-3765, -3765, "Same negative value min test", -3765);
+
     trace_log("Begin Utils::MinVal tests");
 
     return FALSE;
+}
+
+/* ------------------------------------------------------------------------- */
+int test_MaxVal_Int(int a, int b, char *name, int expected)
+{
+    int result = MaxVal(a, b);
+
+    if (result == expected)
+    {
+        debug_log("TEST: %-32.32s: %sPASS%s", name, C_BGRN, C_NRM);
+        return TRUE;
+    }
+    else
+    {
+        debug_log("TEST: %-32.32s: %sFAIL%s : MaxVal(%d, %d) -> expected %d, got %d", name, C_BRED, LC_DBG, a, b, expected, result);
+        return FALSE;
+    }
 }
 
 int test_max()
@@ -118,6 +143,25 @@ int test_max()
     trace_log("Begin Utils::MaxVal tests");
 
     /* Test the MaxVal macro */
+    test_MaxVal_Int (0, 0, "zero, zero max test", 0);
+    test_MaxVal_Int (0, 1, "zero, one max test", 1);
+    test_MaxVal_Int (1, 0, "one, zero max test", 1);
+
+    test_MaxVal_Int (-1, 1, "-one, one max test", 1);
+    test_MaxVal_Int (1, -1, "one, -one max test", 1);
+
+    test_MaxVal_Int (1, 42, "one, forty-two max test", 42);
+    test_MaxVal_Int (42, 1, "forty-two, one max test", 42);
+
+    test_MaxVal_Int (-1, -42, "-one, -forty-two max test", -1);
+    test_MaxVal_Int (-42, -1, "-forty-two, -one max test", -1);
+
+    test_MaxVal_Int (0, INT_MAX, "0, INT_MAX max test", INT_MAX);
+    test_MaxVal_Int (0, INT_MIN, "0, INT_MIN max test", 0);
+    test_MaxVal_Int (INT_MAX, INT_MIN, "INT_MIN, INT_MAX max test", INT_MAX);
+
+    test_MaxVal_Int (3765, 3765, "Same positive value max test", 3765);
+    test_MaxVal_Int (-3765, -3765, "Same negative value max test", -3765);
 
     trace_log("Begin Utils::MaxVal tests");
 

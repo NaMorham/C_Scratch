@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include <time.h>
+#include <math.h>
 #include <string.h>
 
 
@@ -32,7 +33,6 @@ char* log_level_text(int level)
         return "UNKN ";
 }
 
-
 char* log_level_colour(int level)
 {
     if (level == LOG_FATAL)
@@ -51,17 +51,6 @@ char* log_level_colour(int level)
         return (LC_UNK);
 }
 
-
-/**
- * New variable argument log() function; logs messages to disk.
- * Works the same as the old for previously written code but is very nice
- * if new code wishes to implment printf style log messages without the need
- * to make prior sprintf calls.
- *
- * @param format The message to log. Standard printf formatting and variable
- * arguments are allowed.
- * @param args The comma delimited, variable substitutions to make in str.
- */
 void basic_vlog(int level, char *format, va_list args)
 {
     if (format == NULL)
@@ -75,26 +64,28 @@ void basic_vlog(int level, char *format, va_list args)
         char timeBuf[TIME_BUF_SZ];
         char timeFmt[TIME_BUF_SZ];
 
+        long            ms; // Milliseconds
+        time_t          s;  // Seconds
+        struct timespec spec;
+
+        /* Clear buffers */
         memset(timeBuf, 0, sizeof(char)*TIME_BUF_SZ);
-        /*memset(timeFmt, 0, sizeof(char)*TIME_BUF_SZ);
+        memset(timeFmt, 0, sizeof(char)*TIME_BUF_SZ);
 
-        sprintf();
+        /* Get the current system time using the realtime clock */
+        clock_gettime(CLOCK_REALTIME, &spec);
 
-		struct timeval  tv;
-		gettimeofday(&tv, NULL);*/
+        s  = spec.tv_sec;
+        ms = round(spec.tv_nsec / 1.0e6); // Convert nanoseconds to milliseconds
+        if (ms > 999)
+        {
+            s++;
+            ms = 0;
+        }
 
-        time_t ct = time(0);
-        (void)strftime(timeBuf, TIME_BUF_SZ, "%Y-%m-%dT%H:%M:%S.", gmtime(&ct));
+        sprintf(timeFmt, "%%Y-%%m-%%dT%%H:%%M:%%S.%03.3ld %%Z", ms);
+        (void)strftime(timeBuf, TIME_BUF_SZ, timeFmt, gmtime(&s));
 
-        //char *time_s = asctime(localtime(&ct));
-
-        //timeBuf[strlen(timeBuf) - 1] = '\0';
-
-        /*
-        fprintf(stderr, "[%s]%s[%s]%s ", timeBuf, ,log_level_colour(level), log_level_text(level), C_NRM);
-        vfprintf(stderr, format, args);
-        fputc('\n', stderr);
-         */
         fprintf(stderr, "[%s]%s[%s] ", timeBuf ,log_level_colour(level), log_level_text(level));
         vfprintf(stderr, format, args);
         fprintf(stderr, "%s\n", C_NRM);
@@ -104,16 +95,6 @@ void basic_vlog(int level, char *format, va_list args)
 }
 
 
-/** 
- * Log messages directly to stderr on disk, no display to in game immortals.
- * Supports variable string modification arguments, a la printf. Most likely
- * any calls to plain old log() have been redirected, via macro, to this
- * function.
- *
- * @param format The message to log. Standard printf formatting and variable
- * arguments are allowed.
- * @param ... The comma delimited, variable substitutions to make in str.
- */
 void basic_log(int level, char *format, ...)
 {
     va_list args;

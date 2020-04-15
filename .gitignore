@@ -1,3 +1,9 @@
+# Apple bullshit
+.DS_Store
+
+# Windows bullshit
+Thumbs.db
+
 # Prerequisites
 *.d
 
@@ -51,4 +57,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# project specific files
+### Linked List Test
 lltest
+linked_list/include/lltest_version.h

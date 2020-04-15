@@ -3,6 +3,7 @@
 #include <limits.h>
 
 #include <Utils.h>
+#include <lltest_version.h>
 
 int test_min();
 int test_max();
@@ -18,11 +19,12 @@ int main(int argc, char ** argv)
 {
     g_log_level = LOG_DEBUG;
 
+#ifdef USE_COLOUR
     info_log("Show colours");
-
     showColours();
+#endif
 
-    info_log("Run tests");
+    info_log("Run tests: version %d.%d.%d.%d", _VER_MAJOR, _VER_MINOR, _VER_PATCH, _VER_BUILD);
 
     int num_passed = 0;
 
@@ -37,6 +39,7 @@ int main(int argc, char ** argv)
 /* ------------------------------------------------------------------------- */
 void showColours()
 {
+#ifdef USE_COLOUR
     trace_log("Begin Show all normal colours");
 
     debug_log("Colour: %-8.8s: %sXXXX %sXXXX%s %s XXXX %s %s XXXX %s", "Black", C_BLK, C_BBLK, C_NRM, CB_BLK, C_NRM, CB_BBLK, C_NRM);
@@ -55,6 +58,7 @@ void showColours()
     debug_log("Decoration: \"Underline\" %sxxxx%s%s %sXXXX%s%s %siiii%s%s %sIIII%s", C_UND, C_NRM, LC_DBG, C_UND, C_NRM, LC_DBG, C_UND, C_NRM, LC_DBG, C_UND, C_NRM);
 
     trace_log("End Show all normal colours");
+#endif
 }
 
 /* ------------------------------------------------------------------------- */

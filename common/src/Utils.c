@@ -7,7 +7,6 @@
 #include <math.h>
 #include <string.h>
 
-
 #include <Utils.h>
 
 int g_log_level = (LOGLEVEL_DEFAULT);

@@ -46,10 +46,14 @@ message("Common headers: ${COMMON_HDRS}")
 
 set(SRCS
         ${PROJECT_SOURCE_DIR}/test/main.c
+		${PROJECT_SOURCE_DIR}/src/ll_node.c
     )
 message("Project sources: ${SRCS}")
 
-# set(HDRS )
+set(HDRS
+		${PROJECT_SOURCE_DIR}/include/ll_node.h
+	)
+message("Project headers: ${HDRS}")
 
 add_executable(lltest ${COMMON_SRCS} ${COMMON_HDRS} ${SRCS} ${HDRS} )
 

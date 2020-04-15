@@ -5,14 +5,20 @@
 #include <Utils.h>
 #include <lltest_version.h>
 
+/* Util test groups */
 int test_min();
 int test_max();
 int test_limit();
 
+/* Node tests */
+int test_Node();
+
+/* Test runners */
 int test_Utils();
+int test_Linked();
 void showColours();
 
-int g_num_tests = 3;
+int g_num_tests = 4;
 
 /* ------------------------------------------------------------------------- */
 int main(int argc, char ** argv)
@@ -28,7 +34,8 @@ int main(int argc, char ** argv)
 
     int num_passed = 0;
 
-    num_passed+=test_Utils();
+    num_passed += test_Utils();
+    num_passed += test_Linked();
 
     info_log("%d/%d tests passed", num_passed, g_num_tests);
 
@@ -109,11 +116,11 @@ int test_min()
     pass &= test_MinVal_Int(-1, 1, "-1, 1 min test", -1);
     pass &= test_MinVal_Int(1, -1, "1, -1 min test", -1);
 
-    pass &= test_MinVal_Int(1, 42, "1, forty-2 min test", 1);
-    pass &= test_MinVal_Int(42, 1, "forty-2, 1 min test", 1);
+    pass &= test_MinVal_Int(1, 42, "1, 42 min test", 1);
+    pass &= test_MinVal_Int(42, 1, "42, 1 min test", 1);
 
-    pass &= test_MinVal_Int(-1, -42, "-1, -forty-2 min test", -42);
-    pass &= test_MinVal_Int(-42, -1, "-forty-2, -1 min test", -42);
+    pass &= test_MinVal_Int(-1, -42, "-1, -42 min test", -42);
+    pass &= test_MinVal_Int(-42, -1, "-42, -1 min test", -42);
 
     pass &= test_MinVal_Int(0, INT_MAX, "0, INT_MAX min test", 0);
     pass &= test_MinVal_Int(0, INT_MIN, "0, INT_MIN min test", INT_MIN);
@@ -158,11 +165,11 @@ int test_max()
     pass &= test_MaxVal_Int (-1, 1, "-1, 1 max test", 1);
     pass &= test_MaxVal_Int (1, -1, "1, -1 max test", 1);
 
-    pass &= test_MaxVal_Int (1, 42, "1, forty-2 max test", 42);
-    pass &= test_MaxVal_Int (42, 1, "forty-2, 1 max test", 42);
+    pass &= test_MaxVal_Int (1, 42, "1, 42 max test", 42);
+    pass &= test_MaxVal_Int (42, 1, "42, 1 max test", 42);
 
-    pass &= test_MaxVal_Int (-1, -42, "-1, -forty-2 max test", -1);
-    pass &= test_MaxVal_Int (-42, -1, "-forty-2, -1 max test", -1);
+    pass &= test_MaxVal_Int (-1, -42, "-1, -42 max test", -1);
+    pass &= test_MaxVal_Int (-42, -1, "-42, -1 max test", -1);
 
     pass &= test_MaxVal_Int (0, INT_MAX, "0, INT_MAX max test", INT_MAX);
     pass &= test_MaxVal_Int (0, INT_MIN, "0, INT_MIN max test", 0);
@@ -257,3 +264,29 @@ int test_limit()
 
     return pass;
 }
+
+/* ------------------------------------------------------------------------- */
+int test_Node()
+{
+	int pass = TRUE;
+
+	trace_log("Begin Linked::Node tests");
+
+	trace_log("End Linked::Node tests");
+
+	return pass;
+}
+
+int test_Linked()
+{
+	int pass = 0;
+
+	trace_log("Begin Linked tests");
+
+	pass += test_Node();
+
+	trace_log("End Linked tests");
+
+	return pass;
+}
+

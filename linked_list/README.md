@@ -3,3 +3,5 @@
 
 A stupid and simple linked list example
 
+uses CMake
+

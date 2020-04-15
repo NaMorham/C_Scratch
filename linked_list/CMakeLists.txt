@@ -3,7 +3,11 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name and version
 project(lltest VERSION 1.0.0)
 
-add_definitions( -DUSE_COLOUR )
+option(USE_COLOURS "Enable ANSI colour in logging and output" on)
+
+if (USE_COLOURS)
+	add_definitions( -DUSE_COLOUR )
+endif ()
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 11)

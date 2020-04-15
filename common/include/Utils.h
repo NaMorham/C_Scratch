@@ -125,7 +125,13 @@ extern  int g_log_level;
 #define MinVal(a,b) (((a)<(b))?(a):(b))
 #define MaxVal(a,b) (((a)>(b))?(a):(b))
 
-#define LimitVal (i, x, v) (((v) > (x)) ? (x) : ((v) < (i) ? (i) : (v)))
+#define LimitVal(i, x, v) ( ( (x) > (i) ) ? \
+    ( MaxVal( ( MinVal( (v), (x) ) ), (i) ) ) : \
+    ( MaxVal( ( MinVal( (v), (i) ) ), (x) ) ) )
+
+/* Logging control and use */
+extern int getLogLevel();
+extern int setLogLevel(int newLevel);
 
 /**
  * Get the 5 character string representqtion of the log level.

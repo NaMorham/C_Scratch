@@ -10,4 +10,8 @@
 #define _VER_PATCH @lltest_VERSION_PATCH@
 #define _VER_BUILD @LLTEST_BUILD_NUM@
 
+#define _VER_SIMPLE_STRING "@lltest_VERSION_MAJOR@.@lltest_VERSION_MINOR@"
+
+#define _VER_STRING "@lltest_VERSION_MAJOR@.@lltest_VERSION_MINOR@.@lltest_VERSION_PATCH@.@LLTEST_BUILD_NUM@"
+
 #endif  // __ANH_GS__LLTEST_VERSION_H__

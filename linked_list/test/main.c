@@ -85,44 +85,46 @@ int test_MinVal_Int(int a, int b, char *name, int expected)
 
     if (result == expected)
     {
-        debug_log("TEST: %-32.32s: %sPASS%s", name, C_BGRN, C_NRM);
+        debug_log("TEST: %-64.64s: %sPASS%s", name, C_BGRN, C_NRM);
         return TRUE;
     }
     else
     {
-        debug_log("TEST: %-32.32s: %sFAIL%s : MinVal(%d, %d) -> expected %d, got %d", name, C_BRED, LC_DBG, a, b, expected, result);
+        debug_log("TEST: %-64.64s: %sFAIL%s : MinVal(%d, %d) -> expected %d, got %d", name, C_BRED, LC_DBG, a, b, expected, result);
         return FALSE;
     }
 }
 
 int test_min()
 {
+    int pass = TRUE;
+
     trace_log("Begin Utils::MinVal tests");
 
     /* Test the MinVal macro */
-    test_MinVal_Int(0, 0, "zero, zero min test", 0);
-    test_MinVal_Int(0, 1, "zero, one min test", 0);
-    test_MinVal_Int(1, 0, "one, zero min test", 0);
+    pass &= test_MinVal_Int(0, 0, "0, 0 min test", 0);
+    pass &= test_MinVal_Int(0, 1, "0, 1 min test", 0);
+    pass &= test_MinVal_Int(1, 0, "1, 0 min test", 0);
 
-    test_MinVal_Int(-1, 1, "-one, one min test", -1);
-    test_MinVal_Int(1, -1, "one, -one min test", -1);
+    pass &= test_MinVal_Int(-1, 1, "-1, 1 min test", -1);
+    pass &= test_MinVal_Int(1, -1, "1, -1 min test", -1);
 
-    test_MinVal_Int(1, 42, "one, forty-two min test", 1);
-    test_MinVal_Int(42, 1, "forty-two, one min test", 1);
+    pass &= test_MinVal_Int(1, 42, "1, forty-2 min test", 1);
+    pass &= test_MinVal_Int(42, 1, "forty-2, 1 min test", 1);
 
-    test_MinVal_Int(-1, -42, "-one, -forty-two min test", -42);
-    test_MinVal_Int(-42, -1, "-forty-two, -one min test", -42);
+    pass &= test_MinVal_Int(-1, -42, "-1, -forty-2 min test", -42);
+    pass &= test_MinVal_Int(-42, -1, "-forty-2, -1 min test", -42);
 
-    test_MinVal_Int(0, INT_MAX, "0, INT_MAX min test", 0);
-    test_MinVal_Int(0, INT_MIN, "0, INT_MIN min test", INT_MIN);
-    test_MinVal_Int(INT_MAX, INT_MIN, "INT_MIN, INT_MAX min test", INT_MIN);
+    pass &= test_MinVal_Int(0, INT_MAX, "0, INT_MAX min test", 0);
+    pass &= test_MinVal_Int(0, INT_MIN, "0, INT_MIN min test", INT_MIN);
+    pass &= test_MinVal_Int(INT_MAX, INT_MIN, "INT_MIN, INT_MAX min test", INT_MIN);
 
-    test_MinVal_Int(3765, 3765, "Same positive value min test", 3765);
-    test_MinVal_Int(-3765, -3765, "Same negative value min test", -3765);
+    pass &= test_MinVal_Int(3765, 3765, "Same positive value min test", 3765);
+    pass &= test_MinVal_Int(-3765, -3765, "Same negative value min test", -3765);
 
-    trace_log("Begin Utils::MinVal tests");
+    trace_log("End Utils::MinVal tests");
 
-    return FALSE;
+    return pass;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -132,53 +134,126 @@ int test_MaxVal_Int(int a, int b, char *name, int expected)
 
     if (result == expected)
     {
-        debug_log("TEST: %-32.32s: %sPASS%s", name, C_BGRN, C_NRM);
+        debug_log("TEST: %-64.64s: %sPASS%s", name, C_BGRN, C_NRM);
         return TRUE;
     }
     else
     {
-        debug_log("TEST: %-32.32s: %sFAIL%s : MaxVal(%d, %d) -> expected %d, got %d", name, C_BRED, LC_DBG, a, b, expected, result);
+        debug_log("TEST: %-64.64s: %sFAIL%s : MaxVal(%d, %d) -> expected %d, got %d", name, C_BRED, LC_DBG, a, b, expected, result);
         return FALSE;
     }
 }
 
 int test_max()
 {
+	int pass = TRUE;
+
     trace_log("Begin Utils::MaxVal tests");
 
     /* Test the MaxVal macro */
-    test_MaxVal_Int (0, 0, "zero, zero max test", 0);
-    test_MaxVal_Int (0, 1, "zero, one max test", 1);
-    test_MaxVal_Int (1, 0, "one, zero max test", 1);
+    pass &= test_MaxVal_Int (0, 0, "0, 0 max test", 0);
+    pass &= test_MaxVal_Int (0, 1, "0, 1 max test", 1);
+    pass &= test_MaxVal_Int (1, 0, "1, 0 max test", 1);
 
-    test_MaxVal_Int (-1, 1, "-one, one max test", 1);
-    test_MaxVal_Int (1, -1, "one, -one max test", 1);
+    pass &= test_MaxVal_Int (-1, 1, "-1, 1 max test", 1);
+    pass &= test_MaxVal_Int (1, -1, "1, -1 max test", 1);
 
-    test_MaxVal_Int (1, 42, "one, forty-two max test", 42);
-    test_MaxVal_Int (42, 1, "forty-two, one max test", 42);
+    pass &= test_MaxVal_Int (1, 42, "1, forty-2 max test", 42);
+    pass &= test_MaxVal_Int (42, 1, "forty-2, 1 max test", 42);
 
-    test_MaxVal_Int (-1, -42, "-one, -forty-two max test", -1);
-    test_MaxVal_Int (-42, -1, "-forty-two, -one max test", -1);
+    pass &= test_MaxVal_Int (-1, -42, "-1, -forty-2 max test", -1);
+    pass &= test_MaxVal_Int (-42, -1, "-forty-2, -1 max test", -1);
 
-    test_MaxVal_Int (0, INT_MAX, "0, INT_MAX max test", INT_MAX);
-    test_MaxVal_Int (0, INT_MIN, "0, INT_MIN max test", 0);
-    test_MaxVal_Int (INT_MAX, INT_MIN, "INT_MIN, INT_MAX max test", INT_MAX);
+    pass &= test_MaxVal_Int (0, INT_MAX, "0, INT_MAX max test", INT_MAX);
+    pass &= test_MaxVal_Int (0, INT_MIN, "0, INT_MIN max test", 0);
+    pass &= test_MaxVal_Int (INT_MAX, INT_MIN, "INT_MIN, INT_MAX max test", INT_MAX);
 
-    test_MaxVal_Int (3765, 3765, "Same positive value max test", 3765);
-    test_MaxVal_Int (-3765, -3765, "Same negative value max test", -3765);
+    pass &= test_MaxVal_Int (3765, 3765, "Same positive value max test", 3765);
+    pass &= test_MaxVal_Int (-3765, -3765, "Same negative value max test", -3765);
 
-    trace_log("Begin Utils::MaxVal tests");
+    trace_log("End Utils::MaxVal tests");
 
-    return FALSE;
+    return pass;
+}
+
+/* ------------------------------------------------------------------------- */
+int test_LimitVal_Int(int mn, int mx, int val, char *name, int expected)
+{
+    int result = LimitVal(mn, mx, val);
+
+    if (result == expected)
+    {
+        debug_log("TEST: %-64.64s: %sPASS%s", name, C_BGRN, C_NRM);
+        return TRUE;
+    }
+    else
+    {
+        warn_log("TEST: %-64.64s: %sFAIL%s", name, C_BRED, C_NRM);
+        warn_log("> LimitVal(%d, %d, %d) -> expected %d, got %d", mn, mx, val, expected, result);
+        return FALSE;
+    }
 }
 
 int test_limit()
 {
+	int pass = TRUE;
+
     trace_log("Begin Utils::LimitVal tests");
 
     /* Test the LimitVal macro */
+    trace_log(">>> 0 value tests");
+    pass &= test_LimitVal_Int(0, 0, 0, "Limit test: All 0", 0);
 
-    trace_log("Begin Utils::LimitVal tests");
+    /* In range tests */
+    trace_log(">>> Small in range tests");
+    pass &= test_LimitVal_Int(0, 1, 0, "Limit test: 0 to 1, 0", 0);
+    pass &= test_LimitVal_Int(0, 1, 1, "Limit test: 0 to 1, 1", 1);
 
-    return FALSE;
+    /* handle bad max min vals as well (Max < min) */
+    pass &= test_LimitVal_Int(1, 0, 0, "Limit test: 1 to 0, 0", 0);
+    pass &= test_LimitVal_Int(1, 0, 1, "Limit test: 1 to 0, 1", 1);
+
+    pass &= test_LimitVal_Int(-1, 0, 0, "Limit test: 1 to 0, 0", 0);
+    pass &= test_LimitVal_Int(-1, 0, -1, "Limit test: 1 to 0, 1", -1);
+
+    pass &= test_LimitVal_Int(0, -1, 0, "Limit test: 0 to -1, 0", 0);
+    pass &= test_LimitVal_Int(0, -1, -1, "Limit test: 0 to -1, -1", -1);
+
+    pass &= test_LimitVal_Int(-1, 1, 0, "Limit test: -1 to 1, 0", 0);
+    pass &= test_LimitVal_Int(1, -1, 0, "Limit test: 1 to -1, 0", 0);
+
+    pass &= test_LimitVal_Int(-1, 1, -1, "Limit test: -1 to 1, -1", -1);
+    pass &= test_LimitVal_Int(1, -1, -1, "Limit test: 1 to -1, -1", -1);
+
+    pass &= test_LimitVal_Int(-1, 1, 1, "Limit test: -1 to 1, 1", 1);
+    pass &= test_LimitVal_Int(1, -1, 1, "Limit test: 1 to -1, 1", 1);
+
+    pass &= test_LimitVal_Int(10, 20, 15, "Limit test: 10 to 20, 15 (in range)", 15);
+    pass &= test_LimitVal_Int(20, 10, 15, "Limit test: 20 to 10, 15 (in range, bad order)", 15);
+
+    trace_log(">>> Small out of range tests");
+    pass &= test_LimitVal_Int(0, 1, 2, "Limit test: 0 to 1, value = 2 (above range)", 1);
+    pass &= test_LimitVal_Int(0, 1, -1, "Limit test: 0 to 1, value = -1 (below range)", 0);
+
+    pass &= test_LimitVal_Int(1, 0, 2, "Limit test: 1 to 0, value = 2 (above range, bad order)", 1);
+    pass &= test_LimitVal_Int(1, 0, -1, "Limit test: 1 to 0, value = -1 (below range, bad order)", 0);
+
+    pass &= test_LimitVal_Int(-1, 0, 1, "Limit test: 1 to 0, value = 1 (above -ve range)", 0);
+    pass &= test_LimitVal_Int(-1, 0, -2, "Limit test: 1 to 0, value = -2 (below -ve range)", -1);
+
+    pass &= test_LimitVal_Int(10, 20, 25, "Limit test: 10 to 20, value = 25 (above range)", 20);
+    pass &= test_LimitVal_Int(10, 20, 5, "Limit test: 10 to 20, value = 5 (below range)", 10);
+
+    pass &= test_LimitVal_Int(-20, -10, -5, "Limit test: -20 to -10, value = -5 (above range)", -10);
+    pass &= test_LimitVal_Int(-20, -10, -25, "Limit test: -20 to -10, value = -25 (below range)", -20);
+
+    pass &= test_LimitVal_Int(-1230, 1230, 2345, "Limit test: -1230 to 1230, value = 2345 (above range)", 1230);
+    pass &= test_LimitVal_Int(-1230, 1230, -2345, "Limit test: -1230 to 1230, value = -2345 (below range)", -1230);
+
+    pass &= test_LimitVal_Int(10, 20, -5, "Limit test: 10 to 20, value = -5 (-ve value below +ve range)", 10);
+    pass &= test_LimitVal_Int(-20, -10, 5, "Limit test: -20 to -10, value = 5 (+ve value above -ve range)", -10);
+
+    trace_log("End Utils::LimitVal tests");
+
+    return pass;
 }

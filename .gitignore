@@ -57,6 +57,12 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# CMake stuff
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
 # project specific files
 ### Linked List Test
 lltest

@@ -14,6 +14,17 @@ int g_log_level = (LOGLEVEL_DEFAULT);
 
 size_t TIME_BUF_SZ = 64;
 
+int getLogLevel()
+{
+    return g_log_level;
+}
+
+int setLogLevel(int newLevel)
+{
+    int oldLevel = g_log_level;
+    g_log_level = LimitVal(LOG_FATAL, LOG_DEBUG, newLevel);
+    return oldLevel;
+}
 
 char* log_level_text(int level)
 {
@@ -93,7 +104,6 @@ void basic_vlog(int level, char *format, va_list args)
         fflush(stderr);
     }
 }
-
 
 void basic_log(int level, char *format, ...)
 {

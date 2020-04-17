@@ -119,7 +119,11 @@
 #define LC_DBG (C_GRN)
 #define LC_UNK (C_BLU)
 
-extern  int g_log_level;
+#ifndef BOOL
+typedef unsigned char BOOL;
+#endif
+
+extern int g_log_level;
 
 /* Limits and values - macros - bad :( */
 #define MinVal(a,b) (((a)<(b))?(a):(b))
@@ -130,8 +134,8 @@ extern  int g_log_level;
     ( MaxVal( ( MinVal( (v), (i) ) ), (x) ) ) )
 
 /* Logging control and use */
-extern int getLogLevel();
-extern int setLogLevel(int newLevel);
+extern const int getLogLevel();
+extern const int setLogLevel(const int newLevel);
 
 /**
  * Get the 5 character string representqtion of the log level.
@@ -139,7 +143,7 @@ extern int setLogLevel(int newLevel);
  * @param level The log level to retrieve.
  * @return A 5 character representation of the log level.
  */
-extern char* log_level_text(int level);
+extern const char* log_level_text(const int level);
 
 /**
  * Get colour string/code for use when logging to stderr based on the log level.
@@ -147,7 +151,7 @@ extern char* log_level_text(int level);
  * @param level The log level to retrieve.
  * @return An ANSI colour escape code for the log level.
  */
-extern char* log_level_colour(int level);
+extern const char* log_level_colour(const int level);
 
 /** 
  * Log messages directly to stderr on disk, no display to in game immortals.
@@ -160,7 +164,7 @@ extern char* log_level_colour(int level);
  * arguments are allowed.
  * @param ... The comma delimited, variable substitutions to make in str.
  */
-extern void basic_log(int level, char *format, ...) __attribute__ ((format (printf, 2, 3)));
+extern void basic_log(const int level, const char *format, ...) __attribute__ ((format (printf, 2, 3)));
 
 /**
  * New variable argument log() function; logs messages to disk.
@@ -173,7 +177,7 @@ extern void basic_log(int level, char *format, ...) __attribute__ ((format (prin
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void basic_vlog(int level, char *format, va_list args);
+extern void basic_vlog(const int level, const char *format, va_list args);
 
 /**
  * Write a error log level message using var args and sprintf formatting.
@@ -182,7 +186,7 @@ extern void basic_vlog(int level, char *format, va_list args);
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void error_log(char *format, ...) __attribute__ ((format (printf, 1, 2)));
+extern void error_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
 
 /**
  * Write a warning log level message using var args and sprintf formatting.
@@ -191,7 +195,7 @@ extern void error_log(char *format, ...) __attribute__ ((format (printf, 1, 2)))
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void warn_log(char *format, ...) __attribute__ ((format (printf, 1, 2)));
+extern void warn_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
 
 /**
  * Write a info log level message using var args and sprintf formatting.
@@ -200,7 +204,7 @@ extern void warn_log(char *format, ...) __attribute__ ((format (printf, 1, 2)));
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void info_log(char *format, ...) __attribute__ ((format (printf, 1, 2)));
+extern void info_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
 
 /**
  * Write a trace log level message using var args and sprintf formatting.
@@ -209,7 +213,7 @@ extern void info_log(char *format, ...) __attribute__ ((format (printf, 1, 2)));
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void trace_log(char *format, ...) __attribute__ ((format (printf, 1, 2)));
+extern void trace_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
 
 /**
  * Write a debug log level message using var args and sprintf formatting.
@@ -218,6 +222,6 @@ extern void trace_log(char *format, ...) __attribute__ ((format (printf, 1, 2)))
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void debug_log(char *format, ...) __attribute__ ((format (printf, 1, 2)));
+extern void debug_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
 
 #endif // __ANH_GS__UTILS_H__

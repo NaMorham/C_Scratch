@@ -1,41 +1,51 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
+#include <string.h>
 
-#include <Utils.h>
 #include <lltest_version.h>
+#include <Utils.h>
+#include <ll_node.h>
 
 /* Util test groups */
-int test_min();
-int test_max();
-int test_limit();
+const int test_min();
+const int test_max();
+const int test_limit();
 
 /* Node tests */
-int test_Node();
+const BOOL test_Node();
 
 /* Test runners */
-int test_Utils();
-int test_Linked();
+const int test_Utils();
+const int test_Linked();
 void showColours();
 
-int g_num_tests = 4;
+static int g_num_tests = 4;
+
+static const char *g_log_separator = "-----------------------------------------------------------------------------";
 
 /* ------------------------------------------------------------------------- */
-int main(int argc, char ** argv)
+const int main(const int argc, const char ** argv)
 {
     g_log_level = LOG_DEBUG;
+
+    info_log("Run %d tests: version %d.%d.%d.%d", g_num_tests, _VER_MAJOR, _VER_MINOR, _VER_PATCH, _VER_BUILD);
 
 #ifdef USE_COLOUR
     info_log("Show colours");
     showColours();
+    info_log("%s\n", g_log_separator);
 #endif
-
-    info_log("Run tests: version %d.%d.%d.%d", _VER_MAJOR, _VER_MINOR, _VER_PATCH, _VER_BUILD);
 
     int num_passed = 0;
 
+    info_log("> Util tests");
     num_passed += test_Utils();
-    num_passed += test_Linked();
+    info_log("%s\n", g_log_separator);
+
+    info_log("> Linked List tests");
+    num_passed += test_Node();
+    info_log("%s\n", g_log_separator);
 
     info_log("%d/%d tests passed", num_passed, g_num_tests);
 
@@ -69,7 +79,7 @@ void showColours()
 }
 
 /* ------------------------------------------------------------------------- */
-int test_Utils()
+const int test_Utils()
 {
     /* Run tests on the Utils include/files */
     trace_log("Begin Utils tests");
@@ -86,7 +96,7 @@ int test_Utils()
 }
 
 /* ------------------------------------------------------------------------- */
-int test_MinVal_Int(int a, int b, char *name, int expected)
+const int test_MinVal_Int(const int a, const int b, const char *name, const int expected)
 {
     int result = MinVal(a, b);
 
@@ -102,7 +112,7 @@ int test_MinVal_Int(int a, int b, char *name, int expected)
     }
 }
 
-int test_min()
+const int test_min()
 {
     int pass = TRUE;
 
@@ -135,7 +145,7 @@ int test_min()
 }
 
 /* ------------------------------------------------------------------------- */
-int test_MaxVal_Int(int a, int b, char *name, int expected)
+const int test_MaxVal_Int(const int a, const int b, const char *name, const int expected)
 {
     int result = MaxVal(a, b);
 
@@ -151,9 +161,9 @@ int test_MaxVal_Int(int a, int b, char *name, int expected)
     }
 }
 
-int test_max()
+const int test_max()
 {
-	int pass = TRUE;
+    int pass = TRUE;
 
     trace_log("Begin Utils::MaxVal tests");
 
@@ -184,7 +194,7 @@ int test_max()
 }
 
 /* ------------------------------------------------------------------------- */
-int test_LimitVal_Int(int mn, int mx, int val, char *name, int expected)
+const int test_LimitVal_Int(const int mn, const int mx, const int val, const char *name, const int expected)
 {
     int result = LimitVal(mn, mx, val);
 
@@ -201,9 +211,9 @@ int test_LimitVal_Int(int mn, int mx, int val, char *name, int expected)
     }
 }
 
-int test_limit()
+const int test_limit()
 {
-	int pass = TRUE;
+    int pass = TRUE;
 
     trace_log("Begin Utils::LimitVal tests");
 
@@ -266,27 +276,222 @@ int test_limit()
 }
 
 /* ------------------------------------------------------------------------- */
-int test_Node()
+extern const unsigned long __ll_node_get_global_id();
+
+/* test with defined name */
+const BOOL _test_Node1()
 {
-	int pass = TRUE;
+    trace_log(">> Begin:test node 1");
 
-	trace_log("Begin Linked::Node tests");
+    BOOL pass = TRUE;
 
-	trace_log("End Linked::Node tests");
+    unsigned long pre_id;
+    struct LLNode_t dummyNode;
 
-	return pass;
+    const char *expected_name = "test name 1";
+
+    struct LLNode_t *pDummyNode = NULL;
+
+    pre_id = __ll_node_get_global_id();
+
+    trace_log("> Linked::Node Static test 1: pre test id [%lu]", pre_id);
+
+    pDummyNode = init_ll_node(&dummyNode, expected_name);
+
+    /* dummy test node */
+    if (pDummyNode)
+    {
+        dump_node(pDummyNode);
+        pass = ((pDummyNode == &dummyNode) && (pDummyNode->id = (pre_id+1)) && (strcmp(pDummyNode->name, expected_name) == 0));
+
+        if (pass)
+        {
+            debug_log("Dummy Node 1 test: %sPASS%s", C_BGRN, C_NRM);
+            debug_log("> Node data: id [%lu], name [%s]", pDummyNode->id, pDummyNode->name);
+        }
+        else
+        {
+            warn_log("Dummy Node 1 test: %sFAIL%s", C_BRED, C_NRM);
+            if (pDummyNode != &dummyNode)
+            {
+                warn_log("> Returned node pointer [%p] does not match source addresss [%p]", pDummyNode, &dummyNode);
+            }
+            if (pDummyNode->id != (pre_id+1))
+            {
+                warn_log("> Node global id [%lu] did not match expected value [%lu]", pDummyNode->id, (pre_id+1));
+            }
+            if (strcmp(pDummyNode->name, expected_name) != 0)
+            {
+                warn_log("> Node name [%s] did not match expected value [%s]", pDummyNode->name, expected_name);
+            }
+        }
+    }
+    else
+    {
+        error_log("GOt null pointer from static node init");
+        pass = FALSE;
+    }
+
+    trace_log("<< End:test node 1");
+
+    return pass;
 }
 
-int test_Linked()
+/* test with empty name */
+const BOOL _test_Node2()
 {
-	int pass = 0;
+    trace_log(">> Begin:test node 2");
 
-	trace_log("Begin Linked tests");
+    BOOL pass = TRUE;
 
-	pass += test_Node();
+    unsigned long pre_id;
+    struct LLNode_t dummyNode;
 
-	trace_log("End Linked tests");
+    char expected_name[LL_NODE_TINY_BUF_SZ+1];
 
-	return pass;
+    pre_id = __ll_node_get_global_id();
+    memset(expected_name, '\0', sizeof(char)*(LL_NODE_TINY_BUF_SZ+1));
+    /* sprintf is safe since max ulong is 18446744073709551615 == 20 characters
+       as long as the buffer is larger than 20+12 charcaters */
+    sprintf(expected_name, "Unnamed_node_%lu", (pre_id+1));
+    /*snprintf(expected_name, LL_NODE_TINY_BUF_SZ, 0, "Unnamed_node_%lu", (pre_id+1));*/
+
+    struct LLNode_t *pDummyNode = NULL;
+
+    trace_log("> Linked::Node Static test 2 (empty name): pre test id [%lu]", pre_id);
+
+    pDummyNode = init_ll_node(&dummyNode, "");
+
+    /* dummy test node */
+    if (pDummyNode)
+    {
+        dump_node(pDummyNode);
+        pass = ((pDummyNode == &dummyNode) && (pDummyNode->id = (pre_id+1)) && (strcmp(pDummyNode->name, expected_name) == 0));
+
+        if (pass)
+        {
+            debug_log("Dummy Node 1 test: %sPASS%s", C_BGRN, C_NRM);
+            debug_log("> Node data: id [%lu], name [%s]", pDummyNode->id, pDummyNode->name);
+        }
+        else
+        {
+            warn_log("Dummy Node 1 test: %sFAIL%s", C_BRED, C_NRM);
+            if (pDummyNode != &dummyNode)
+            {
+                warn_log("> Returned node pointer [%p] does not match source addresss [%p]", pDummyNode, &dummyNode);
+            }
+            if (pDummyNode->id != (pre_id+1))
+            {
+                warn_log("> Node global id [%lu] did not match expected value [%lu]", pDummyNode->id, (pre_id+1));
+            }
+            if (strcmp(pDummyNode->name, expected_name) != 0)
+            {
+                warn_log("> Node name [%s] did not match expected value [%s]", pDummyNode->name, expected_name);
+            }
+        }
+    }
+    else
+    {
+        error_log("Got null pointer from static node init");
+        pass = FALSE;
+    }
+
+    trace_log("<< End: test node 2");
+    return pass;
+}
+
+/* test with NULL name */
+const BOOL _test_Node3()
+{
+    trace_log(">> Begin:test node 3");
+
+    BOOL pass = TRUE;
+
+    unsigned long pre_id;
+    struct LLNode_t dummyNode;
+
+    char expected_name[LL_NODE_TINY_BUF_SZ+1];
+
+    pre_id = __ll_node_get_global_id();
+    memset(expected_name, '\0', sizeof(char)*(LL_NODE_TINY_BUF_SZ+1));
+    /* sprintf is safe since max ulong is 18446744073709551615 == 20 characters
+       as long as the buffer is larger than 20+12 charcaters */
+    sprintf(expected_name, "Unnamed_node_%lu", (pre_id+1));
+    /*snprintf(expected_name, LL_NODE_TINY_BUF_SZ, 0, "Unnamed_node_%lu", (pre_id+1));*/
+
+    struct LLNode_t *pDummyNode = NULL;
+
+    trace_log("> Linked::Node Static test 3 (NULL name): pre test id [%lu]", pre_id);
+
+    pDummyNode = init_ll_node(&dummyNode, NULL);
+
+    /* dummy test node */
+    if (pDummyNode)
+    {
+        dump_node(pDummyNode);
+        pass = ((pDummyNode == &dummyNode) && (pDummyNode->id = (pre_id+1)) && (strcmp(pDummyNode->name, expected_name) == 0));
+
+        if (pass)
+        {
+            debug_log("Dummy Node 1 test: %sPASS%s", C_BGRN, C_NRM);
+            debug_log("> Node data: id [%lu], name [%s]", pDummyNode->id, pDummyNode->name);
+        }
+        else
+        {
+            warn_log("Dummy Node 1 test: %sFAIL%s", C_BRED, C_NRM);
+            if (pDummyNode != &dummyNode)
+            {
+                warn_log("> Returned node pointer [%p] does not match source addresss [%p]", pDummyNode, &dummyNode);
+            }
+            if (pDummyNode->id != (pre_id+1))
+            {
+                warn_log("> Node global id [%lu] did not match expected value [%lu]", pDummyNode->id, (pre_id+1));
+            }
+            if (strcmp(pDummyNode->name, expected_name) != 0)
+            {
+                warn_log("> Node name [%s] did not match expected value [%s]", pDummyNode->name, expected_name);
+            }
+        }
+    }
+    else
+    {
+        error_log("Got null pointer from static node init");
+        pass = FALSE;
+    }
+
+    trace_log("<< End:test node 3");
+
+    return pass;
+}
+
+const BOOL test_Node()
+{
+    BOOL pass = TRUE;
+
+    trace_log("Begin Linked::Node tests");
+
+    trace_log("--- Static allocation ---");
+    pass &= _test_Node1();
+    pass &= _test_Node2();
+    pass &= _test_Node3();
+
+    trace_log("--- Memory allocation ---");
+
+    trace_log("End Linked::Node tests");
+
+    return pass;
+}
+
+const int test_Linked()
+{
+    int pass = 0;
+
+    trace_log("Begin Linked tests");
+
+    pass += test_Node();
+
+    trace_log("End Linked tests");
+
+    return pass;
 }
 

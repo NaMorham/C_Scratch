@@ -24,14 +24,16 @@
 
 struct LLNode_t
 {
-	unsigned long id;
-	char name[LL_NODE_TINY_BUF_SZ+1];
+    unsigned long id;
+    char name[LL_NODE_TINY_BUF_SZ+1];
 
-	struct LLNode_t* pNext;
+    struct LLNode_t* pNext;
 };
 
-extern struct LLNode_t* init_ll_node(struct LLNode_t* pNode, char *name);
+#ifdef LL_ALLOW_TEST 
+extern struct LLNode_t* init_ll_node(struct LLNode_t* pNode, const char *name);
+#endif // LL_ALLOW_TEST
 
-extern void dump_node(struct LLNode_t* pNode);
+extern void dump_node(const struct LLNode_t* pNode);
 
-#endif. // __ANH_GS__LL_NODE_H__
+#endif  // __ANH_GS__LL_NODE_H__

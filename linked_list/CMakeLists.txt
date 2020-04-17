@@ -6,8 +6,9 @@ project(lltest VERSION 1.0.0)
 option(USE_COLOURS "Enable ANSI colour in logging and output" on)
 
 if (USE_COLOURS)
-	add_definitions( -DUSE_COLOUR )
+    add_definitions( -DUSE_COLOUR )
 endif ()
+add_definitions( -DLL_ALLOW_TEST )
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 11)
@@ -46,13 +47,13 @@ message("Common headers: ${COMMON_HDRS}")
 
 set(SRCS
         ${PROJECT_SOURCE_DIR}/test/main.c
-		${PROJECT_SOURCE_DIR}/src/ll_node.c
+        ${PROJECT_SOURCE_DIR}/src/ll_node.c
     )
 message("Project sources: ${SRCS}")
 
 set(HDRS
-		${PROJECT_SOURCE_DIR}/include/ll_node.h
-	)
+        ${PROJECT_SOURCE_DIR}/include/ll_node.h
+    )
 message("Project headers: ${HDRS}")
 
 add_executable(lltest ${COMMON_SRCS} ${COMMON_HDRS} ${SRCS} ${HDRS} )

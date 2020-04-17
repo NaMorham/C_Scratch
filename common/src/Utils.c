@@ -13,19 +13,19 @@ int g_log_level = (LOGLEVEL_DEFAULT);
 
 size_t TIME_BUF_SZ = 64;
 
-int getLogLevel()
+const int getLogLevel()
 {
     return g_log_level;
 }
 
-int setLogLevel(int newLevel)
+const int setLogLevel(const int newLevel)
 {
     int oldLevel = g_log_level;
     g_log_level = LimitVal(LOG_FATAL, LOG_DEBUG, newLevel);
     return oldLevel;
 }
 
-char* log_level_text(int level)
+const char* log_level_text(const int level)
 {
     if (level == LOG_FATAL)
         return "FATAL";
@@ -43,7 +43,7 @@ char* log_level_text(int level)
         return "UNKN ";
 }
 
-char* log_level_colour(int level)
+const char* log_level_colour(const int level)
 {
     if (level == LOG_FATAL)
         return (LC_FTL);
@@ -61,15 +61,17 @@ char* log_level_colour(int level)
         return (LC_UNK);
 }
 
-void basic_vlog(int level, char *format, va_list args)
+void basic_vlog(const int level, const char *format, va_list args)
 {
+    int _level = level;
+
     if (format == NULL)
     {
         format = "SYSERR: received a NULL format.";
-        level = LOG_ERROR;
+        _level = LOG_ERROR;
     }
 
-    if (level <= g_log_level)
+    if (_level <= g_log_level)
     {
         char timeBuf[TIME_BUF_SZ];
         char timeFmt[TIME_BUF_SZ];
@@ -104,7 +106,7 @@ void basic_vlog(int level, char *format, va_list args)
     }
 }
 
-void basic_log(int level, char *format, ...)
+void basic_log(const int level, const char *format, ...)
 {
     va_list args;
 
@@ -113,7 +115,7 @@ void basic_log(int level, char *format, ...)
     va_end(args);
 }
 
-void error_log(char *format, ...)
+void error_log(const char*format, ...)
 {
     va_list args;
 
@@ -122,7 +124,7 @@ void error_log(char *format, ...)
     va_end(args);
 }
 
-void warn_log(char *format, ...)
+void warn_log(const char*format, ...)
 {
     va_list args;
 
@@ -131,7 +133,7 @@ void warn_log(char *format, ...)
     va_end(args);
 }
 
-void info_log(char *format, ...)
+void info_log(const char*format, ...)
 {
     va_list args;
 
@@ -140,7 +142,7 @@ void info_log(char *format, ...)
     va_end(args);
 }
 
-void trace_log(char *format, ...)
+void trace_log(const char*format, ...)
 {
     va_list args;
 
@@ -149,7 +151,7 @@ void trace_log(char *format, ...)
     va_end(args);
 }
 
-void debug_log(char *format, ...)
+void debug_log(const char*format, ...)
 {
     va_list args;
 

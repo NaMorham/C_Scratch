@@ -34,6 +34,12 @@ struct LLNode_t
 extern struct LLNode_t* init_ll_node(struct LLNode_t* pNode, const char *name);
 #endif // LL_ALLOW_TEST
 
+extern struct LLNode_t* ll_node_alloc(const char *name);
+
+extern void ll_node_free(struct LLNode_t** ppNode);
+
+extern struct LLNode_t* ll_node_copy(const struct LLNode_t* pNode);
+
 extern void dump_node(const struct LLNode_t* pNode);
 
 #endif  // __ANH_GS__LL_NODE_H__

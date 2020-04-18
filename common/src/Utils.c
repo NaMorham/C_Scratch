@@ -61,7 +61,7 @@ const char* log_level_colour(const int level)
         return (LC_UNK);
 }
 
-void basic_vlog(const int level, const char *format, va_list args)
+void basic_vlog(const char *funcname, const int level, const char *format, va_list args)
 {
     int _level = level;
 
@@ -98,7 +98,7 @@ void basic_vlog(const int level, const char *format, va_list args)
         sprintf(timeFmt, "%%Y-%%m-%%dT%%H:%%M:%%S.%03.3ld %%Z", ms);
         (void)strftime(timeBuf, TIME_BUF_SZ, timeFmt, gmtime(&s));
 
-        fprintf(stderr, "[%s]%s[%s] ", timeBuf ,log_level_colour(level), log_level_text(level));
+        fprintf(stderr, "[%s]%s[%s][%-16.16s] ", timeBuf ,log_level_colour(level), log_level_text(level), funcname);
         vfprintf(stderr, format, args);
         fprintf(stderr, "%s\n", C_NRM);
         
@@ -106,56 +106,12 @@ void basic_vlog(const int level, const char *format, va_list args)
     }
 }
 
-void basic_log(const int level, const char *format, ...)
+void basic_log(const char *funcname, const int level, const char *format, ...)
 {
     va_list args;
 
     va_start(args, format);
-    basic_vlog(level, format, args);
+    basic_vlog(funcname, level, format, args);
     va_end(args);
 }
 
-void error_log(const char*format, ...)
-{
-    va_list args;
-
-    va_start(args, format);
-    basic_vlog(LOG_ERROR, format, args);
-    va_end(args);
-}
-
-void warn_log(const char*format, ...)
-{
-    va_list args;
-
-    va_start(args, format);
-    basic_vlog(LOG_WARN, format, args);
-    va_end(args);
-}
-
-void info_log(const char*format, ...)
-{
-    va_list args;
-
-    va_start(args, format);
-    basic_vlog(LOG_INFO, format, args);
-    va_end(args);
-}
-
-void trace_log(const char*format, ...)
-{
-    va_list args;
-
-    va_start(args, format);
-    basic_vlog(LOG_TRACE, format, args);
-    va_end(args);
-}
-
-void debug_log(const char*format, ...)
-{
-    va_list args;
-
-    va_start(args, format);
-    basic_vlog(LOG_DEBUG, format, args);
-    va_end(args);
-}

@@ -159,12 +159,13 @@ extern const char* log_level_colour(const int level);
  * any calls to plain old log() have been redirected, via macro, to this
  * function.
  *
+ * @param funcname The name of the calling function.
  * @param level The logging level of the message.
  * @param format The message to log. Standard printf formatting and variable
  * arguments are allowed.
  * @param ... The comma delimited, variable substitutions to make in str.
  */
-extern void basic_log(const int level, const char *format, ...) __attribute__ ((format (printf, 2, 3)));
+extern void basic_log(const char *funcname, const int level, const char *format, ...) __attribute__ ((format (printf, 3, 4)));
 
 /**
  * New variable argument log() function; logs messages to disk.
@@ -172,12 +173,13 @@ extern void basic_log(const int level, const char *format, ...) __attribute__ ((
  * if new code wishes to implment printf style log messages without the need
  * to make prior sprintf calls.
  *
+ * @param funcname The name of the calling function.
  * @param level The logging level of the message.
  * @param format The message to log. Standard printf formatting and variable
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void basic_vlog(const int level, const char *format, va_list args);
+extern void basic_vlog(const char *funcname, const int level, const char *format, va_list args);
 
 /**
  * Write a error log level message using var args and sprintf formatting.
@@ -186,7 +188,7 @@ extern void basic_vlog(const int level, const char *format, va_list args);
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void error_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
+#define error_log(fmt, ...) basic_log(__FUNCTION__, LOG_ERROR, fmt, ##__VA_ARGS__)
 
 /**
  * Write a warning log level message using var args and sprintf formatting.
@@ -195,7 +197,7 @@ extern void error_log(const char* format, ...) __attribute__ ((format (printf, 1
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void warn_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
+#define warn_log(fmt, ...) basic_log(__FUNCTION__, LOG_WARN, fmt, ##__VA_ARGS__)
 
 /**
  * Write a info log level message using var args and sprintf formatting.
@@ -204,7 +206,7 @@ extern void warn_log(const char* format, ...) __attribute__ ((format (printf, 1,
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void info_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
+#define info_log(fmt, ...) basic_log(__FUNCTION__, LOG_INFO, fmt, ##__VA_ARGS__)
 
 /**
  * Write a trace log level message using var args and sprintf formatting.
@@ -213,7 +215,7 @@ extern void info_log(const char* format, ...) __attribute__ ((format (printf, 1,
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void trace_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
+#define trace_log(fmt, ...) basic_log(__FUNCTION__, LOG_TRACE, fmt, ##__VA_ARGS__)
 
 /**
  * Write a debug log level message using var args and sprintf formatting.
@@ -222,6 +224,6 @@ extern void trace_log(const char* format, ...) __attribute__ ((format (printf, 1
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void debug_log(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
+#define debug_log(fmt, ...) basic_log(__FUNCTION__, LOG_DEBUG, fmt, ##__VA_ARGS__)
 
 #endif // __ANH_GS__UTILS_H__

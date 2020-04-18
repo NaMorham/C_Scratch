@@ -29,6 +29,10 @@ const int main(const int argc, const char ** argv)
 {
     g_log_level = LOG_DEBUG;
 
+    //printf("__FUNC__ = %s", __FUNC__);
+    printf("\n\n__FUNCTION__ = %s\n\n\n", __FUNCTION__);
+    //printf("__FNAME__ = %s", __FNAME__);
+
     info_log("Run %d tests: version %d.%d.%d.%d", g_num_tests, _VER_MAJOR, _VER_MINOR, _VER_PATCH, _VER_BUILD);
 
 #ifdef USE_COLOUR
@@ -476,7 +480,18 @@ const BOOL test_Node()
     pass &= _test_Node3();
 
     trace_log("--- Memory allocation ---");
-
+    struct LLNode_t *pNode = (struct LLNode_t *)malloc(sizeof(struct LLNode_t));
+    if (pNode)
+    {
+    	debug_log("New LLNode at [%p]", pNode);
+		ll_node_free(&pNode);
+    	debug_log("After free, pNode [%p]", pNode);
+    }
+    else
+    {
+    	error_log("Could not allocate memory for a LLNode_t");
+    }
+   
     trace_log("End Linked::Node tests");
 
     return pass;

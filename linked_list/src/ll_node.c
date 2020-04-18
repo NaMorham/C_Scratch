@@ -54,6 +54,34 @@ struct LLNode_t* init_ll_node(struct LLNode_t* pNode, const char *name)
     return pNode;
 }
 
+struct LLNode_t* ll_node_alloc(const char *name)
+{
+	return NULL;
+}
+
+void ll_node_free(struct LLNode_t** ppNode)
+{
+	if (ppNode == NULL)
+	{
+		error_log("NULL pointer pointer passed to free");
+	}
+	else if (*ppNode == NULL)
+	{
+		error_log("NULL pointer passed to free");
+	}
+	else
+	{
+		trace_log("Free node pointer [%p]", *ppNode);
+		free(*ppNode);
+		*ppNode = NULL;
+	}
+}
+
+struct LLNode_t* ll_node_copy(const struct LLNode_t* pNode)
+{
+	return NULL;
+}
+
 void dump_node(const struct LLNode_t* pNode)
 {
     if (pNode)

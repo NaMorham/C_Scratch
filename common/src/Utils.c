@@ -35,10 +35,10 @@ const char* log_level_text(const int level)
         return "WARN ";
     else if (level == LOG_INFO)
         return "INFO ";
-    else if (level == LOG_TRACE)
-        return "TRACE";
     else if (level == LOG_DEBUG)
         return "DEBUG";
+    else if (level == LOG_TRACE)
+        return "TRACE";
     else
         return "UNKN ";
 }
@@ -53,10 +53,10 @@ const char* log_level_colour(const int level)
         return (LC_WRN);
     else if (level == LOG_INFO)
         return (LC_INF);
-    else if (level == LOG_TRACE)
-        return (LC_TRC);
     else if (level == LOG_DEBUG)
         return (LC_DBG);
+    else if (level == LOG_TRACE)
+        return (LC_TRC);
     else
         return (LC_UNK);
 }

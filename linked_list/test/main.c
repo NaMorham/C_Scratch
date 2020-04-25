@@ -27,11 +27,7 @@ static const char *g_log_separator = "------------------------------------------
 /* ------------------------------------------------------------------------- */
 const int main(const int argc, const char ** argv)
 {
-    g_log_level = LOG_DEBUG;
-
-    //printf("__FUNC__ = %s", __FUNC__);
-    printf("\n\n__FUNCTION__ = %s\n\n\n", __FUNCTION__);
-    //printf("__FNAME__ = %s", __FNAME__);
+    g_log_level = LOG_TRACE;//DEBUG;
 
     info_log("Run %d tests: version %d.%d.%d.%d", g_num_tests, _VER_MAJOR, _VER_MINOR, _VER_PATCH, _VER_BUILD);
 
@@ -290,11 +286,11 @@ const BOOL _test_Node1()
     BOOL pass = TRUE;
 
     unsigned long pre_id;
-    struct LLNode_t dummyNode;
+    LLNode dummyNode;
 
     const char *expected_name = "test name 1";
 
-    struct LLNode_t *pDummyNode = NULL;
+    LLNode *pDummyNode = NULL;
 
     pre_id = __ll_node_get_global_id();
 
@@ -349,7 +345,7 @@ const BOOL _test_Node2()
     BOOL pass = TRUE;
 
     unsigned long pre_id;
-    struct LLNode_t dummyNode;
+    LLNode dummyNode;
 
     char expected_name[LL_NODE_TINY_BUF_SZ+1];
 
@@ -360,7 +356,7 @@ const BOOL _test_Node2()
     sprintf(expected_name, "Unnamed_node_%lu", (pre_id+1));
     /*snprintf(expected_name, LL_NODE_TINY_BUF_SZ, 0, "Unnamed_node_%lu", (pre_id+1));*/
 
-    struct LLNode_t *pDummyNode = NULL;
+    LLNode *pDummyNode = NULL;
 
     trace_log("> Linked::Node Static test 2 (empty name): pre test id [%lu]", pre_id);
 
@@ -412,7 +408,7 @@ const BOOL _test_Node3()
     BOOL pass = TRUE;
 
     unsigned long pre_id;
-    struct LLNode_t dummyNode;
+    LLNode dummyNode;
 
     char expected_name[LL_NODE_TINY_BUF_SZ+1];
 
@@ -423,7 +419,7 @@ const BOOL _test_Node3()
     sprintf(expected_name, "Unnamed_node_%lu", (pre_id+1));
     /*snprintf(expected_name, LL_NODE_TINY_BUF_SZ, 0, "Unnamed_node_%lu", (pre_id+1));*/
 
-    struct LLNode_t *pDummyNode = NULL;
+    LLNode *pDummyNode = NULL;
 
     trace_log("> Linked::Node Static test 3 (NULL name): pre test id [%lu]", pre_id);
 
@@ -474,24 +470,104 @@ const BOOL test_Node()
 
     trace_log("Begin Linked::Node tests");
 
-    trace_log("--- Static allocation ---");
+    debug_log("--- Static allocation ---");
     pass &= _test_Node1();
     pass &= _test_Node2();
     pass &= _test_Node3();
 
-    trace_log("--- Memory allocation ---");
-    struct LLNode_t *pNode = (struct LLNode_t *)malloc(sizeof(struct LLNode_t));
+    debug_log("--- Memory allocation ---");
+    trace_log("> C stdlib calloc with ll_node_free");
+    // IMPORTANT: Use calloc so we zero out the new node - we are not calling init!!!
+    LLNode *pNode = (LLNode *)calloc(1,sizeof(LLNode));
     if (pNode)
     {
-    	debug_log("New LLNode at [%p]", pNode);
-		ll_node_free(&pNode);
-    	debug_log("After free, pNode [%p]", pNode);
+        debug_log("New LLNode at [%p]", pNode);
+        dump_node(pNode);
+        ll_node_free(&pNode);
+        pass &= (pNode == NULL);
+        debug_log("After free, pNode [%p]", pNode);
     }
     else
     {
-    	error_log("Could not allocate memory for a LLNode_t");
+        error_log("Could not allocate memory for a LLNode_t");
+        pass = FALSE;
+    }
+
+    trace_log("> ll_node_alloc with C stdlib free");
+    pNode = ll_node_alloc("Test alloc 1");
+    if (pNode)
+    {
+        debug_log("Got new node at [%p]", pNode);
+        dump_node(pNode);
+        free(pNode);
+        pNode = NULL;
+    }
+    else
+    {
+        error_log("Could not allocate new LLNode");
+        pass = FALSE;
     }
    
+    trace_log("> ll_node_alloc with ll_node_free");
+    pNode = ll_node_alloc("Test alloc 1");
+    if (pNode)
+    {
+        debug_log("Got new node at [%p]", pNode);
+        dump_node(pNode);
+        ll_node_free(&pNode);
+        pass &= (pNode == NULL);
+        dump_node(pNode);
+        debug_log("After free, pNode [%p]", pNode);
+    }
+    else
+    {
+        error_log("Could not allocate new LLNode");
+        pass = FALSE;
+    }
+
+	LLNode *pCopyNode = NULL;
+    trace_log("> ll_node_alloc, ll_node_copy with ll_node_free");
+    pNode = ll_node_alloc("Test alloc 2");
+    if (pNode)
+    {
+        debug_log("Got new node at [%p]", pNode);
+        dump_node(pNode);
+        pCopyNode = ll_node_copy(pNode);
+    }
+    else
+    {
+        error_log("Could not allocate new LLNode");
+        pass = FALSE;
+    }
+
+    if (!pNode)
+    {
+    	// do nothing
+    }
+    else if (pCopyNode)
+    {
+        debug_log("Got copied node at [%p]", pCopyNode);
+        dump_node(pCopyNode);
+    }
+    else
+    {
+        error_log("Could not allocate copied LLNode");
+        pass = FALSE;
+    }
+
+    if (pNode)
+    {
+        ll_node_free(&pNode);
+        dump_node(pNode);
+        pass &= (pNode == NULL);
+    }
+    if (pCopyNode)
+    {
+        ll_node_free(&pCopyNode);
+        dump_node(pCopyNode);
+        pass &= (pCopyNode == NULL);
+    }
+
     trace_log("End Linked::Node tests");
 
     return pass;

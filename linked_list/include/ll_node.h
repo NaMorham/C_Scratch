@@ -22,24 +22,24 @@
 #endif // LL_NODE_HUGE_BUF_SZ
 
 
-struct LLNode_t
+typedef struct LLNode_t
 {
     unsigned long id;
     char name[LL_NODE_TINY_BUF_SZ+1];
 
     struct LLNode_t* pNext;
-};
+} LLNode;
 
 #ifdef LL_ALLOW_TEST 
-extern struct LLNode_t* init_ll_node(struct LLNode_t* pNode, const char *name);
+extern LLNode* init_ll_node(LLNode* pNode, const char *name);  // this should not be called directly normally
 #endif // LL_ALLOW_TEST
 
-extern struct LLNode_t* ll_node_alloc(const char *name);
+extern LLNode* ll_node_alloc(const char *name);
 
-extern void ll_node_free(struct LLNode_t** ppNode);
+extern void ll_node_free(LLNode** ppNode);
 
-extern struct LLNode_t* ll_node_copy(const struct LLNode_t* pNode);
+extern LLNode* ll_node_copy(const LLNode* pNode);
 
-extern void dump_node(const struct LLNode_t* pNode);
+extern void dump_node(const LLNode* pNode);
 
 #endif  // __ANH_GS__LL_NODE_H__

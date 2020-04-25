@@ -20,7 +20,7 @@ const unsigned long __ll_node_get_global_id()
 #ifndef LL_ALLOW_TEST
 static
 #endif  // LL_ALLOW_TEST
-struct LLNode_t* init_ll_node(struct LLNode_t* pNode, const char *name)
+LLNode* init_ll_node(LLNode* pNode, const char *name)
 {
     size_t name_len = 0;
 
@@ -54,35 +54,55 @@ struct LLNode_t* init_ll_node(struct LLNode_t* pNode, const char *name)
     return pNode;
 }
 
-struct LLNode_t* ll_node_alloc(const char *name)
+LLNode* ll_node_alloc(const char *name)
 {
-	return NULL;
+    trace_log("Allocate and initialise new LLNode");
+
+    // allocation is initialisation
+    LLNode *pNewNode = (LLNode *)malloc(sizeof(LLNode));
+    if (pNewNode)
+    {
+        init_ll_node(pNewNode, name);
+    }
+
+    return pNewNode;
 }
 
-void ll_node_free(struct LLNode_t** ppNode)
+void ll_node_free(LLNode** ppNode)
 {
-	if (ppNode == NULL)
-	{
-		error_log("NULL pointer pointer passed to free");
-	}
-	else if (*ppNode == NULL)
-	{
-		error_log("NULL pointer passed to free");
-	}
-	else
-	{
-		trace_log("Free node pointer [%p]", *ppNode);
-		free(*ppNode);
-		*ppNode = NULL;
-	}
+    if (ppNode == NULL)
+    {
+        error_log("NULL pointer pointer passed to free");
+    }
+    else if (*ppNode == NULL)
+    {
+        error_log("NULL pointer passed to free");
+    }
+    else
+    {
+        trace_log("Free node pointer [%p]", *ppNode);
+        free(*ppNode);
+        *ppNode = NULL;
+    }
 }
 
-struct LLNode_t* ll_node_copy(const struct LLNode_t* pNode)
+LLNode* ll_node_copy(const LLNode* pNode)
 {
-	return NULL;
+    trace_log("Allocate, initialise and duplicate an existing LLNode");
+    LLNode *pNewNode = NULL;
+    if (pNode)
+    {
+        // we have something to copy
+        pNewNode = ll_node_alloc(pNode->name);
+    }
+    else
+    {
+        error_log("NULL pointer pointer passed to copy");
+    }
+    return pNewNode;
 }
 
-void dump_node(const struct LLNode_t* pNode)
+void dump_node(const LLNode* pNode)
 {
     if (pNode)
     {

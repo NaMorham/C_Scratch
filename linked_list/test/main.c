@@ -1,9 +1,12 @@
+/**
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>
 
 #include <lltest_version.h>
+<<<<<<< Updated upstream
 #include <Utils.h>
 #include <ll_node.h>
 
@@ -18,11 +21,31 @@ const BOOL test_Node();
 /* Test runners */
 const int test_Utils();
 const int test_Linked();
-void showColours();
+=======
+#include <list_node.h>
 
+int test_min();
+int test_max();
+int test_limit();
+int test_itoa();
+
+>>>>>>> Stashed changes
+void showColours();
+int test_Utils();
+int test_SingleLinkedList();
+
+#define LARGE_STR_BUF 256
+#ifndef NULL
+# define NULL ((void*)0)
+#endif
+
+<<<<<<< Updated upstream
 static int g_num_tests = 4;
 
 static const char *g_log_separator = "-----------------------------------------------------------------------------";
+=======
+int g_num_tests = 6;
+>>>>>>> Stashed changes
 
 /* ------------------------------------------------------------------------- */
 const int main(const int argc, const char ** argv)
@@ -39,6 +62,7 @@ const int main(const int argc, const char ** argv)
 
     int num_passed = 0;
 
+<<<<<<< Updated upstream
     info_log("> Util tests");
     num_passed += test_Utils();
     info_log("%s\n", g_log_separator);
@@ -46,18 +70,27 @@ const int main(const int argc, const char ** argv)
     info_log("> Linked List tests");
     num_passed += test_Node();
     info_log("%s\n", g_log_separator);
+=======
+    num_passed += test_Utils();
+    num_passed += test_SingleLinkedList();
+    num_passed += test_itoa();
+>>>>>>> Stashed changes
 
     info_log("%d/%d tests passed", num_passed, g_num_tests);
+    info_log("----------------------------------------------------------------------------");
 
-    return (num_passed = g_num_tests);
+    return (num_passed == g_num_tests);
 }
 
 
 /* ------------------------------------------------------------------------- */
+/*
+ */
 void showColours()
 {
+    info_log("----------------------------------------------------------------------------");
 #ifdef USE_COLOUR
-    trace_log("Begin Show all normal colours");
+    info_log("Begin Show all normal colours");
 
     debug_log("Colour: %-8.8s: %sXXXX %sXXXX%s %s XXXX %s %s XXXX %s", "Black", C_BLK, C_BBLK, C_NRM, CB_BLK, C_NRM, CB_BBLK, C_NRM);
     debug_log("Colour: %-8.8s: %sXXXX %sXXXX%s %s XXXX %s %s XXXX %s", "Red", C_RED, C_BRED, C_NRM, CB_RED, C_NRM, CB_BRED, C_NRM);
@@ -74,14 +107,25 @@ void showColours()
     debug_log("Decoration: \"Italic\"    %sxxxx XXXX iiii IIII%s", C_ITL, C_NRM);
     debug_log("Decoration: \"Underline\" %sxxxx%s%s %sXXXX%s%s %siiii%s%s %sIIII%s", C_UND, C_NRM, LC_DBG, C_UND, C_NRM, LC_DBG, C_UND, C_NRM, LC_DBG, C_UND, C_NRM);
 
-    trace_log("End Show all normal colours");
+    info_log("End Show all normal colours");
+
+#else
+    info_log("Skip colour test when USE_COLOUR is not defined")
+
 #endif
 }
 
 /* ------------------------------------------------------------------------- */
+<<<<<<< Updated upstream
 const int test_Utils()
+=======
+/*
+ */
+int test_Utils()
+>>>>>>> Stashed changes
 {
     /* Run tests on the Utils include/files */
+    trace_log("============================================================================");
     trace_log("Begin Utils tests");
 
     int result = 0;
@@ -96,7 +140,13 @@ const int test_Utils()
 }
 
 /* ------------------------------------------------------------------------- */
+<<<<<<< Updated upstream
 const int test_MinVal_Int(const int a, const int b, const char *name, const int expected)
+=======
+/*
+ */
+int test_MinVal_Int(int a, int b, char *name, int expected)
+>>>>>>> Stashed changes
 {
     int result = MinVal(a, b);
 
@@ -112,10 +162,17 @@ const int test_MinVal_Int(const int a, const int b, const char *name, const int 
     }
 }
 
+<<<<<<< Updated upstream
 const int test_min()
+=======
+/*
+ */
+int test_min()
+>>>>>>> Stashed changes
 {
     int pass = TRUE;
 
+    trace_log("----------------------------------------------------------------------------");
     trace_log("Begin Utils::MinVal tests");
 
     /* Test the MinVal macro */
@@ -145,7 +202,13 @@ const int test_min()
 }
 
 /* ------------------------------------------------------------------------- */
+<<<<<<< Updated upstream
 const int test_MaxVal_Int(const int a, const int b, const char *name, const int expected)
+=======
+/*
+ */
+int test_MaxVal_Int(int a, int b, char *name, int expected)
+>>>>>>> Stashed changes
 {
     int result = MaxVal(a, b);
 
@@ -161,10 +224,17 @@ const int test_MaxVal_Int(const int a, const int b, const char *name, const int 
     }
 }
 
+<<<<<<< Updated upstream
 const int test_max()
+=======
+/*
+ */
+int test_max()
+>>>>>>> Stashed changes
 {
     int pass = TRUE;
 
+    trace_log("----------------------------------------------------------------------------");
     trace_log("Begin Utils::MaxVal tests");
 
     /* Test the MaxVal macro */
@@ -194,7 +264,13 @@ const int test_max()
 }
 
 /* ------------------------------------------------------------------------- */
+<<<<<<< Updated upstream
 const int test_LimitVal_Int(const int mn, const int mx, const int val, const char *name, const int expected)
+=======
+/*
+ */
+int test_LimitVal_Int(int mn, int mx, int val, char *name, int expected)
+>>>>>>> Stashed changes
 {
     int result = LimitVal(mn, mx, val);
 
@@ -211,10 +287,17 @@ const int test_LimitVal_Int(const int mn, const int mx, const int val, const cha
     }
 }
 
+<<<<<<< Updated upstream
 const int test_limit()
+=======
+/*
+ */
+int test_limit()
+>>>>>>> Stashed changes
 {
     int pass = TRUE;
 
+    trace_log("----------------------------------------------------------------------------");
     trace_log("Begin Utils::LimitVal tests");
 
     /* Test the LimitVal macro */
@@ -276,6 +359,7 @@ const int test_limit()
 }
 
 /* ------------------------------------------------------------------------- */
+<<<<<<< Updated upstream
 extern const unsigned long __ll_node_get_global_id();
 
 /* test with defined name */
@@ -586,3 +670,179 @@ const int test_Linked()
     return pass;
 }
 
+=======
+/*
+ */
+int test_itoa_result(char* name, int val, int base, char* expected)
+{
+    char buf[LARGE_STR_BUF+1], name_buf[LARGE_STR_BUF+1];
+    int pass = TRUE;
+    
+    memset(buf, 0, sizeof(char)*(LARGE_STR_BUF+1));
+    memset(name_buf, 0, sizeof(char)*(LARGE_STR_BUF+1));
+    
+    (void)myitoa(val, buf, base);
+    //trace_log("myitoa(%d, buf, %d) -> \"%s\"", val, base, buf);
+    
+    sprintf(name_buf, "myitoa: %s (expect \"%s\", got \"%s\")", name, expected, buf);
+    if (strcmp(expected, buf) == 0)
+    {
+        debug_log("TEST: %-64.64s: %sPASS%s", name_buf, C_BGRN, C_NRM);
+    }
+    else
+    {
+        warn_log("TEST: %-64.64s: %sFAIL%s", name_buf, C_BRED, C_NRM);
+        pass = FALSE;
+    }
+    return pass;
+}
+
+/*
+ */
+int test_itoa()
+{
+    char testbuf[LARGE_STR_BUF+1];
+    int pass = TRUE;
+    
+    memset(testbuf, 0, sizeof(char)*(LARGE_STR_BUF+1));
+    
+    info_log("----------------------------------------------------------------------------");
+    info_log("Begin Utils::itoa tests");
+
+    /* Test the itoa func */
+    trace_log("Simple base 10 tests");
+    pass &= test_itoa_result("0 val test", 0, 10, "0");
+    pass &= test_itoa_result("1 val test", 4, 10, "4");
+    pass &= test_itoa_result("3 digit test", 125, 10, "125");
+    pass &= test_itoa_result("negative val test", -13, 10, "-13");
+    pass &= test_itoa_result("SHRT_MAX val test", SHRT_MAX, 10, "32767");
+    pass &= test_itoa_result("SHRT_MIN val test", SHRT_MIN, 10, "-32768");
+    pass &= test_itoa_result("INT_MAX val test", INT_MAX, 10, "2147483647");
+    pass &= test_itoa_result("INT_MIN val test", INT_MIN, 10, "-2147483648");
+
+    trace_log("Simple base 16 (hex) tests");
+    pass &= test_itoa_result("0 val test", 0, 16, "0");
+    pass &= test_itoa_result("1 val test", 4, 16, "4");
+    pass &= test_itoa_result("1 val test", 10, 16, "A");
+    pass &= test_itoa_result("3 digit test", 125, 16, "125");
+
+    info_log("End Utils::itoa tests");
+
+    return pass;
+}
+
+/* ------------------------------------------------------------------------- */
+char* expectPtrAsStr(int val) { return (val == TRUE ? "not null" : "null"); }
+
+/*
+ */
+int testNode_Exist(char* name, SLL_NODE_P pNode, int expectNull, int expectVal, int expectNextNull)
+{
+    char buf[LARGE_STR_BUF+1];
+    int result = TRUE;
+
+    // Check node pointer
+    memset(buf, 0, sizeof(char)*(LARGE_STR_BUF+1));
+    sprintf(buf, "%s:Exist (expect %s, got %s)", name,
+        expectPtrAsStr(expectNull), IsNullStr(pNode));
+    if (pNode && !expectNull)
+    {
+        debug_log("TEST: %-64.64s: %sPASS%s", buf, C_BGRN, C_NRM);
+    }
+    else if (!pNode && expectNull)
+    {
+        debug_log("TEST: %-64.64s: %sPASS%s", buf, C_BGRN, C_NRM);
+    }
+    else
+    {
+        warn_log("TEST: %-64.64s: %sFAIL%s", buf, C_BRED, C_NRM);
+        result = FALSE;
+    }
+
+    // Check value
+    if (pNode)
+    {
+        memset(buf, 0, sizeof(char)*(LARGE_STR_BUF+1));
+        sprintf(buf, "%s:Value (expect %d, got %d)", name, expectVal, pNode->value);
+        if (pNode->value == expectVal)
+        {
+            debug_log("TEST: %-64.64s: %sPASS%s", buf, C_BGRN, C_NRM);
+        }
+        else
+        {
+            warn_log("TEST: %-64.64s: %sFAIL%s", buf, C_BRED, C_NRM);
+            result = FALSE;
+        }
+    }
+    else
+    {
+        memset(buf, 0, sizeof(char)*(LARGE_STR_BUF+1));
+        sprintf(buf, "%s:Value", buf);
+        debug_log("TEST: %-64.64s: %sSKIP%s", buf, C_BYEL, C_NRM);
+    }
+
+    // Check next pointer
+    memset(buf, 0, sizeof(char)*(LARGE_STR_BUF+1));
+    sprintf(buf, "%s:Next (expect %s, got %s)", name,
+        expectPtrAsStr(expectNextNull), IsNullStr(pNode->next));
+    if (pNode)
+    {
+        if (pNode->next && !expectNextNull)
+        {
+            debug_log("TEST: %-64.64s: %sPASS%s", buf, C_BGRN, C_NRM);
+        }
+        else if (!pNode->next && expectNextNull)
+        {
+            debug_log("TEST: %-64.64s: %sPASS%s", buf, C_BGRN, C_NRM);
+        }
+        else
+        {
+            warn_log("TEST: %-64.64s: %sFAIL%s", buf, C_BRED, C_NRM);
+            result = FALSE;
+        }
+    }
+    else
+    {
+        debug_log("TEST: %-64.64s: %sSKIP%s", buf, C_BYEL, C_NRM);
+    }
+    
+    return result;
+}
+
+/*
+ */
+int test_SingleLinkedList()
+{
+    int passed = TRUE;
+    SLL_Node* pNode = NULL;
+    
+    trace_log("----------------------------------------------------------------------------");
+    trace_log("Begin Single linked list tests");
+    
+    trace_log("Begin::Create Single linked list tests");
+    pNode = Create_SLL_Node(42);
+    passed &= testNode_Exist("NULL node", pNode, FALSE, 42, TRUE);
+    free(pNode);
+    pNode = NULL;
+
+    pNode = Create_SLL_Node(42);
+    passed &= testNode_Exist("Create node (42)", pNode, FALSE, 42, TRUE);
+    free(pNode);
+    pNode = NULL;
+
+    pNode = Create_SLL_Node(0);
+    passed &= testNode_Exist("Create node (0)", pNode, FALSE, 0, TRUE);
+    free(pNode);
+    pNode = NULL;
+
+    pNode = Create_SLL_Node(-1);
+    passed &= testNode_Exist("Create node (-1)", pNode, FALSE, -1, TRUE);
+    free(pNode);
+    pNode = NULL;
+    trace_log("End::Create Single linked list tests");
+
+    trace_log("End Single linked list tests");
+    
+    return passed;
+}
+>>>>>>> Stashed changes

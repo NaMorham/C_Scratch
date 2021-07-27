@@ -1,0 +1,6 @@
+*.swp
+*.suo
+
+build/**
+basic/**
+

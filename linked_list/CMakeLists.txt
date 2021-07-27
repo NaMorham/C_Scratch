@@ -10,9 +10,11 @@ if (USE_COLOURS)
 endif ()
 add_definitions( -DLL_ALLOW_TEST )
 
-# specify the C++ standard
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+add_definitions( -D_CRT_SECURE_NO_WARNING )
+
+set(CMAKE_BUILD_TYPE Debug)
+
+message("Project_Source_Dir: ${PROJECT_SOURCE_DIR}")
 
 set(LLTEST_BUILD_DIR "${PROJECT_SOURCE_DIR}/build/test")
 
@@ -47,15 +49,26 @@ message("Common headers: ${COMMON_HDRS}")
 
 set(SRCS
         ${PROJECT_SOURCE_DIR}/test/main.c
+<<<<<<< Updated upstream
         ${PROJECT_SOURCE_DIR}/src/ll_node.c
+=======
+        ./src/list_node.c
+>>>>>>> Stashed changes
     )
 message("Project sources: ${SRCS}")
 
 set(HDRS
+<<<<<<< Updated upstream
         ${PROJECT_SOURCE_DIR}/include/ll_node.h
     )
 message("Project headers: ${HDRS}")
+=======
+        ./include/list_node.h 
+    )
+message("Project sources: ${HDRS}")
+>>>>>>> Stashed changes
 
 add_executable(lltest ${COMMON_SRCS} ${COMMON_HDRS} ${SRCS} ${HDRS} )
 
 target_include_directories(lltest PUBLIC ${COMMON_INCLUDE_PATH} ${PROJECT_SOURCE_DIR}/include )
+

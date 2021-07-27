@@ -14,8 +14,12 @@
 #define TRUE 1
 #endif
 
+#ifdef _MSC_VER
+# define __attribute__(x)
+#endif
+
 /* Colour vals */
-#ifdef USE_COLOUR
+#ifdef USE_COLOURXX
     #define C_NRM "\033[0m"
 
     #define C_BLD "\033[1m"
@@ -134,8 +138,14 @@ extern int g_log_level;
     ( MaxVal( ( MinVal( (v), (i) ) ), (x) ) ) )
 
 /* Logging control and use */
+<<<<<<< Updated upstream
 extern const int getLogLevel();
 extern const int setLogLevel(const int newLevel);
+=======
+extern int getLogLevel();
+extern int setLogLevel(int newLevel);
+extern char* IsNullStr(void* ptr);
+>>>>>>> Stashed changes
 
 /**
  * Get the 5 character string representqtion of the log level.
@@ -225,5 +235,9 @@ extern void basic_vlog(const char *funcname, const int level, const char *format
  * @param args The comma delimited, variable substitutions to make in str.
  */
 #define debug_log(fmt, ...) basic_log(__FUNCTION__, LOG_DEBUG, fmt, ##__VA_ARGS__)
+
+/**
+ */
+extern char* myitoa(int num, char* buffer, int base);
 
 #endif // __ANH_GS__UTILS_H__

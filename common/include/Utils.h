@@ -138,14 +138,9 @@ extern int g_log_level;
     ( MaxVal( ( MinVal( (v), (i) ) ), (x) ) ) )
 
 /* Logging control and use */
-<<<<<<< Updated upstream
-extern const int getLogLevel();
-extern const int setLogLevel(const int newLevel);
-=======
 extern int getLogLevel();
 extern int setLogLevel(int newLevel);
-extern char* IsNullStr(void* ptr);
->>>>>>> Stashed changes
+extern const char* IsNullStr(const void* ptr);
 
 /**
  * Get the 5 character string representqtion of the log level.
@@ -153,7 +148,7 @@ extern char* IsNullStr(void* ptr);
  * @param level The log level to retrieve.
  * @return A 5 character representation of the log level.
  */
-extern const char* log_level_text(const int level);
+extern const char* log_level_text(int level);
 
 /**
  * Get colour string/code for use when logging to stderr based on the log level.
@@ -161,7 +156,7 @@ extern const char* log_level_text(const int level);
  * @param level The log level to retrieve.
  * @return An ANSI colour escape code for the log level.
  */
-extern const char* log_level_colour(const int level);
+extern const char* log_level_colour(int level);
 
 /** 
  * Log messages directly to stderr on disk, no display to in game immortals.
@@ -175,7 +170,7 @@ extern const char* log_level_colour(const int level);
  * arguments are allowed.
  * @param ... The comma delimited, variable substitutions to make in str.
  */
-extern void basic_log(const char *funcname, const int level, const char *format, ...) __attribute__ ((format (printf, 3, 4)));
+extern void basic_log(const char *funcname, int level, const char *format, ...) __attribute__ ((format (printf, 3, 4)));
 
 /**
  * New variable argument log() function; logs messages to disk.
@@ -189,7 +184,7 @@ extern void basic_log(const char *funcname, const int level, const char *format,
  * arguments are allowed.
  * @param args The comma delimited, variable substitutions to make in str.
  */
-extern void basic_vlog(const char *funcname, const int level, const char *format, va_list args);
+extern void basic_vlog(const char *funcname, int level, const char *format, va_list args);
 
 /**
  * Write a error log level message using var args and sprintf formatting.
@@ -238,6 +233,6 @@ extern void basic_vlog(const char *funcname, const int level, const char *format
 
 /**
  */
-extern char* myitoa(int num, char* buffer, int base);
+extern const char* myitoa(int num, char* buffer, int base);
 
 #endif // __ANH_GS__UTILS_H__

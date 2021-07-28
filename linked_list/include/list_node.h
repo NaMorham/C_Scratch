@@ -15,7 +15,7 @@ struct _SLL_NODE {
 typedef struct _SLL_NODE SLL_Node;
 typedef struct _SLL_NODE* SLL_NODE_P;
 
-extern char *SLL_Node_AsStr(SLL_NODE_P pNode, char *buf, int bufSz);
+extern const char *SLL_Node_AsStr(SLL_NODE_P pNode, char *buf, int bufSz);
 
 extern SLL_Node* Create_SLL_Node(int val);
 

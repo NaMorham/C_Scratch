@@ -13,28 +13,25 @@ int g_log_level = (LOGLEVEL_DEFAULT);
 
 #define TIME_BUF_SZ 64
 
-const int getLogLevel()
+int getLogLevel()
 {
     return g_log_level;
 }
 
-const int setLogLevel(const int newLevel)
+int setLogLevel(int newLevel)
 {
     int oldLevel = g_log_level;
     g_log_level = LimitVal(LOG_FATAL, LOG_DEBUG, newLevel);
     return oldLevel;
 }
 
-<<<<<<< Updated upstream
-const char* log_level_text(const int level)
-=======
-char* IsNullStr(void* ptr)
+
+const char* IsNullStr(const void* ptr)
 {
     return (ptr ? "not null" : "null");
 }
 
-char* log_level_text(int level)
->>>>>>> Stashed changes
+const char* log_level_text(int level)
 {
     if (level == LOG_FATAL)
         return "FATAL";
@@ -52,7 +49,7 @@ char* log_level_text(int level)
         return "UNKN ";
 }
 
-const char* log_level_colour(const int level)
+const char* log_level_colour(int level)
 {
     if (level == LOG_FATAL)
         return (LC_FTL);
@@ -70,22 +67,23 @@ const char* log_level_colour(const int level)
         return (LC_UNK);
 }
 
-<<<<<<< Updated upstream
-void basic_vlog(const char *funcname, const int level, const char *format, va_list args)
-=======
-char* get_timestamp(char* timeBuf, int bufSz)
+const char* get_timestamp(char* timeBuf, int bufSz)
 {
     char timeFmt[TIME_BUF_SZ];
 
 #ifdef _MSC_VER
     time_t now = time(NULL);
     struct tm newtm;
+    long timezone;
+
+    _get_timezone(&timezone);
 
     /* Clear buffers */
     memset(timeFmt, 0, sizeof(char)*TIME_BUF_SZ);
 
     localtime_s(&newtm, &now);
-    sprintf(timeFmt, "%%Y-%%m-%%dT%%H:%%M:%%S%s%02d:%02d", (_timezone<0 ? "+" : ""), -1*_timezone%3600, -1*_timezone/3600);
+    sprintf_s(timeFmt, TIME_BUF_SZ, "%%Y-%%m-%%dT%%H:%%M:%%S%s%02d:%02d",
+        (timezone<0 ? "+" : ""), -1 * timezone % 3600, -1 * timezone / 3600);
     strftime(timeBuf, bufSz, timeFmt, &newtm);
 #else
     long            ms; // Milliseconds
@@ -113,8 +111,7 @@ char* get_timestamp(char* timeBuf, int bufSz)
     return timeBuf;
 }
 
-void basic_vlog(int level, char *format, va_list args)
->>>>>>> Stashed changes
+void basic_vlog(const char *funcname, int level, const char *format, va_list args)
 {
     int _level = level;
 
@@ -129,25 +126,7 @@ void basic_vlog(int level, char *format, va_list args)
         char timeBuf[TIME_BUF_SZ];
         memset(timeBuf, 0, sizeof(char)*TIME_BUF_SZ);
 
-<<<<<<< Updated upstream
-        /* Get the current system time using the realtime clock */
-        clock_gettime(CLOCK_REALTIME, &spec);
-
-        s  = spec.tv_sec;
-        ms = round(spec.tv_nsec / 1.0e6); // Convert nanoseconds to milliseconds
-        if (ms > 999)
-        {
-            s++;
-            ms = 0;
-        }
-
-        sprintf(timeFmt, "%%Y-%%m-%%dT%%H:%%M:%%S.%03.3ld %%Z", ms);
-        (void)strftime(timeBuf, TIME_BUF_SZ, timeFmt, gmtime(&s));
-
-        fprintf(stderr, "[%s]%s[%s][%-16.16s] ", timeBuf ,log_level_colour(level), log_level_text(level), funcname);
-=======
         fprintf(stderr, "[%s]%s[%s] ", get_timestamp(timeBuf, TIME_BUF_SZ),log_level_colour(level), log_level_text(level));
->>>>>>> Stashed changes
         vfprintf(stderr, format, args);
         fprintf(stderr, "%s\n", C_NRM);
         
@@ -155,7 +134,7 @@ void basic_vlog(int level, char *format, va_list args)
     }
 }
 
-void basic_log(const char *funcname, const int level, const char *format, ...)
+void basic_log(const char *funcname, int level, const char *format, ...)
 {
     va_list args;
 
@@ -164,18 +143,7 @@ void basic_log(const char *funcname, const int level, const char *format, ...)
     va_end(args);
 }
 
-<<<<<<< Updated upstream
-=======
-void debug_log(char *format, ...)
-{
-    va_list args;
-
-    va_start(args, format);
-    basic_vlog(LOG_DEBUG, format, args);
-    va_end(args);
-}
-
-char* myitoa(int num, char* buffer, int base)
+const char* myitoa(int num, char* buffer, int base)
 {
     int curr = 0;
  
@@ -227,4 +195,3 @@ char* myitoa(int num, char* buffer, int base)
     buffer[curr] = '\0';
     return buffer;
 }
->>>>>>> Stashed changes

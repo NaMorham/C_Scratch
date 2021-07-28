@@ -49,26 +49,15 @@ message("Common headers: ${COMMON_HDRS}")
 
 set(SRCS
         ${PROJECT_SOURCE_DIR}/test/main.c
-<<<<<<< Updated upstream
-        ${PROJECT_SOURCE_DIR}/src/ll_node.c
-=======
         ./src/list_node.c
->>>>>>> Stashed changes
     )
 message("Project sources: ${SRCS}")
 
 set(HDRS
-<<<<<<< Updated upstream
-        ${PROJECT_SOURCE_DIR}/include/ll_node.h
-    )
-message("Project headers: ${HDRS}")
-=======
         ./include/list_node.h 
     )
 message("Project sources: ${HDRS}")
->>>>>>> Stashed changes
 
 add_executable(lltest ${COMMON_SRCS} ${COMMON_HDRS} ${SRCS} ${HDRS} )
 
 target_include_directories(lltest PUBLIC ${COMMON_INCLUDE_PATH} ${PROJECT_SOURCE_DIR}/include )
-

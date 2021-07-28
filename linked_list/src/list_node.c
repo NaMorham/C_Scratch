@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <Utils.h>
 #include "../include/list_node.h"
 
-char *SLL_Node_AsStr(SLL_NODE_P pNode, char *buf, int bufSz)
+const char *SLL_Node_AsStr(SLL_NODE_P pNode, char *buf, int bufSz)
 {
     char buffer[65];
     memset(buffer, 0, 65 * sizeof(buffer));
@@ -12,7 +13,7 @@ char *SLL_Node_AsStr(SLL_NODE_P pNode, char *buf, int bufSz)
     if (buf)
     {
         memset(buf, 0, bufSz*sizeof(char));
-        sprintf(buf, "Node(0x%08x) [value = %s, next = 0x%08x]", pNode,
+        sprintf_s(buf, bufSz-1, "Node(0x%08x) [value = %s, next = 0x%08x]", pNode,
             (pNode ? myitoa(pNode->value, buffer, 10) : "NAN"),
             (pNode ? pNode->next : 0));
     }

@@ -146,6 +146,7 @@ void basic_log(const char *funcname, int level, const char *format, ...)
 const char* myitoa(int num, char* buffer, int base)
 {
     int curr = 0;
+    const char *key = "0123456789abcdefghijklmnopqrstuvwxyz";
  
     if (num == 0)
     {
@@ -186,7 +187,7 @@ const char* myitoa(int num, char* buffer, int base)
         // Get the numerical value
         int num_val = num / base_val;
  
-        char value = num_val + '0';
+        char value = *(key + num_val);
         buffer[curr] = value;
  
         curr ++;

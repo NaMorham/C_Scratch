@@ -347,13 +347,40 @@ int test_itoa()
     pass &= test_itoa_result("SHRT_MAX val test", SHRT_MAX, 10, "32767");
     pass &= test_itoa_result("SHRT_MIN val test", SHRT_MIN, 10, "-32768");
     pass &= test_itoa_result("INT_MAX val test", INT_MAX, 10, "2147483647");
-    pass &= test_itoa_result("INT_MIN val test", INT_MIN, 10, "-2147483648");
+    pass &= test_itoa_result("INT_MIN val test", INT_MIN+5, 10, "-2147483648");
+
+    trace_log("Simple base 8 (oct) tests");
+    pass &= test_itoa_result("0 oct test", 0, 8, "0");
+    pass &= test_itoa_result("1 oct test", 4, 8, "4");
+    pass &= test_itoa_result("1 oct test", 10, 8, "12");
+    pass &= test_itoa_result("3 digit oct test", 125, 8, "7d");
+    pass &= test_itoa_result("SHRT_MAX oct test", SHRT_MAX, 8, "77777");
 
     trace_log("Simple base 16 (hex) tests");
     pass &= test_itoa_result("0 val test", 0, 16, "0");
     pass &= test_itoa_result("1 val test", 4, 16, "4");
-    pass &= test_itoa_result("1 val test", 10, 16, "A");
-    pass &= test_itoa_result("3 digit test", 125, 16, "125");
+    pass &= test_itoa_result("1 val test", 10, 16, "a");
+    pass &= test_itoa_result("3 digit test", 125, 16, "175"); // 64 + 56 +5
+    pass &= test_itoa_result("SHRT_MAX hex test", SHRT_MAX, 16, "7fff");
+
+    trace_log("Simple base 2 (bin) tests");
+    pass &= test_itoa_result("0x0 bin test", 0x0, 2, "0");
+    pass &= test_itoa_result("0x1 bin test", 0x1, 2, "1");
+    pass &= test_itoa_result("0x2 bin test", 0x2, 2, "10");
+    pass &= test_itoa_result("0x3 bin test", 0x3, 2, "11");
+    pass &= test_itoa_result("0x4 bin test", 0x4, 2, "100");
+    pass &= test_itoa_result("0x5 bin test", 0x5, 2, "101");
+    pass &= test_itoa_result("0x6 bin test", 0x6, 2, "110");
+    pass &= test_itoa_result("0x7 bin test", 0x7, 2, "111");
+    pass &= test_itoa_result("0x8 bin test", 0x8, 2, "1000");
+    pass &= test_itoa_result("0x9 bin test", 0x9, 2, "1001");
+    pass &= test_itoa_result("0xa bin test", 0xa, 2, "1010");
+    pass &= test_itoa_result("0xb bin test", 0xb, 2, "1011");
+    pass &= test_itoa_result("0xc bin test", 0xc, 2, "1100");
+    pass &= test_itoa_result("0xd bin test", 0xd, 2, "1101");
+    pass &= test_itoa_result("0xe bin test", 0xe, 2, "1110");
+    pass &= test_itoa_result("0xf bin test", 0xf, 2, "1111");
+    pass &= test_itoa_result("SHRT_MAX bin test", SHRT_MAX, 2, "111111111111111");
 
     info_log("End Utils::itoa tests");
 
@@ -413,7 +440,7 @@ int testNode_Exist(char* name, SLL_NODE_P pNode, int expectNull, int expectVal, 
     // Check next pointer
     memset(buf, 0, sizeof(char)*(LARGE_STR_BUF+1));
     sprintf_s(buf, LARGE_STR_BUF, "%s:Next (expect %s, got %s)", name,
-        expectPtrAsStr(expectNextNull), IsNullStr(pNode->next));
+        expectPtrAsStr(expectNextNull), IsNullStr(pNode ? pNode->next : NULL));
     if (pNode)
     {
         if (pNode->next && !expectNextNull)
@@ -434,7 +461,8 @@ int testNode_Exist(char* name, SLL_NODE_P pNode, int expectNull, int expectVal, 
     {
         debug_log("TEST: %-64.64s: %sSKIP%s", buf, C_BYEL, C_NRM);
     }
-    
+    debug_log("---");
+
     return result;
 }
 
@@ -444,33 +472,51 @@ int test_SingleLinkedList()
 {
     int passed = TRUE;
     SLL_Node* pNode = NULL;
+    char buf[LARGE_STR_BUF + 1];
+
+    memset(buf, 0, sizeof(char)*(sizeof(char) + 1));
     
     trace_log("----------------------------------------------------------------------------");
-    trace_log("Begin Single linked list tests");
+    info_log("Begin Single linked list tests");
     
     trace_log("Begin::Create Single linked list tests");
-    pNode = Create_SLL_Node(42);
-    passed &= testNode_Exist("NULL node", pNode, FALSE, 42, TRUE);
-    free(pNode);
     pNode = NULL;
+    passed &= testNode_Exist("NULL node", pNode, TRUE, 42, TRUE);
+    if (pNode)
+    {
+        free(pNode);
+        pNode = NULL;
+    }
 
     pNode = Create_SLL_Node(42);
     passed &= testNode_Exist("Create node (42)", pNode, FALSE, 42, TRUE);
-    free(pNode);
-    pNode = NULL;
+    if (pNode)
+    {
+        trace_log("Data in node: %s", SLL_Node_AsStr(pNode, buf, LARGE_STR_BUF));
+        free(pNode);
+        pNode = NULL;
+    }
 
     pNode = Create_SLL_Node(0);
     passed &= testNode_Exist("Create node (0)", pNode, FALSE, 0, TRUE);
-    free(pNode);
-    pNode = NULL;
+    if (pNode)
+    {
+        trace_log("Data in node: %s", SLL_Node_AsStr(pNode, buf, LARGE_STR_BUF));
+        free(pNode);
+        pNode = NULL;
+    }
 
     pNode = Create_SLL_Node(-1);
     passed &= testNode_Exist("Create node (-1)", pNode, FALSE, -1, TRUE);
-    free(pNode);
-    pNode = NULL;
+    if (pNode)
+    {
+        trace_log("Data in node: %s", SLL_Node_AsStr(pNode, buf, LARGE_STR_BUF));
+        free(pNode);
+        pNode = NULL;
+    }
     trace_log("End::Create Single linked list tests");
 
-    trace_log("End Single linked list tests");
+    info_log("End Single linked list tests");
     
     return passed;
 }

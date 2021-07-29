@@ -5,10 +5,14 @@
 #include <Utils.h>
 #include "../include/list_node.h"
 
+#ifndef LARGE_STR_BUF
+# define LARGE_STR_BUF 1024
+#endif
+
 const char *SLL_Node_AsStr(SLL_NODE_P pNode, char *buf, int bufSz)
 {
-    char buffer[65];
-    memset(buffer, 0, 65 * sizeof(buffer));
+    char buffer[LARGE_STR_BUF+1];
+    memset(buffer, 0, sizeof(char)*(LARGE_STR_BUF+1));
 
     if (buf)
     {

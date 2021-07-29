@@ -68,3 +68,11 @@ cmake_install.cmake
 lltest
 linked_list/include/lltest_version.h
 ll_test.zip
+
+*.swp
+*.suo
+
+build/**
+basic/**
+linked_list/build/vs/**
+
